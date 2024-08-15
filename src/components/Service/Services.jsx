@@ -1,21 +1,25 @@
-import React from 'react';
+import React from "react";
 
 const services = [
-  { title: 'Design', description: 'Aesthetics with purpose' },
-  { title: 'Engineering', description: 'Uncompromising quality' },
-  { title: 'Marketing', description: 'Amplifying brand reach' },
-  { title: 'Investment', description: 'More than just capital' },
-  { title: 'Education', description: 'Equipping for growth' },
-  { title:  'Mentorship', description:'To '}
+  { title: "Design", description: "Aesthetics with purpose" },
+  { title: "Engineering", description: "Uncompromising quality" },
+  { title: "Marketing", description: "Amplifying brand reach" },
+  { title: "Investment", description: "More than just capital" },
+  { title: "Education", description: "Equipping for growth" },
+  { title: "Mentorship", description: "To " },
 ];
 
 const Services = () => {
   return (
-    <section className="bg-black text-white py-20 px-10 flex flex-col items-center text-center">
+    <section
+      id="services"
+      className="bg-black text-white py-20 px-10 flex flex-col items-center text-center"
+    >
       <div className="mb-12 max-w-lg">
         <h2 className="text-3xl font-bold mb-4">Our Core Expertise</h2>
         <p className="text-lg">
-          We specialize in providing top-tier services that drive innovation, quality, and growth across every aspect of your business.
+          We specialize in providing top-tier services that drive innovation,
+          quality, and growth across every aspect of your business.
         </p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8 justify-center">

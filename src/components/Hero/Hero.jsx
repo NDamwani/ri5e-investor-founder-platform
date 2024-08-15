@@ -1,9 +1,8 @@
-import React from 'react';
 import ThreeDModel from './ThreeDModel';
 
 const Hero = () => {
   return (
-    <section className="bg-black text-white h-screen flex items-center justify-between px-10">
+    <section className="bg-black text-white h-screen flex items-center justify-between px-10 text-center">
       <div className="max-w-lg">
         <h1 className="text-6xl font-bold mb-4">Ri5E Above Achieve Beyond</h1>
         <p className="text-2xl mb-8">Empowering Early-Stage Success Through Innovation</p>
@@ -11,7 +10,7 @@ const Hero = () => {
           Learn More
         </button>
       </div>
-      <div className="w-1/2 flex justify-center items-center">
+      <div className="w-1/2 flex justify-center items-center max-sm:hidden">
         <ThreeDModel />
       </div>
     </section>

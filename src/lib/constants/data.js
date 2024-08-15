@@ -3,6 +3,18 @@ export const navLinks = [
         title: 'Login',
         link: '/login',
     },
+    {
+        title: 'Vision',
+        link: '#vision',
+    },
+    {
+        title: 'Services',
+        link: '#services',
+    },
+    {
+        title: 'Team',
+        link: '#team',
+    },
 ]
 
 export const footerLinks = [
