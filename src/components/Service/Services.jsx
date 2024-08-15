@@ -6,6 +6,7 @@ const services = [
   { title: 'Marketing', description: 'Amplifying brand reach' },
   { title: 'Investment', description: 'More than just capital' },
   { title: 'Education', description: 'Equipping for growth' },
+  { title:  'Mentorship', description:'To '}
 ];
 
 const Services = () => {
