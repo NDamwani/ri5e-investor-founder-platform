@@ -1,8 +1,15 @@
+import React from 'react';
+import Hero from './components/Hero/Hero';
+import Vision from './components/Vision/Vision';
+import Services from './components/Service/Services';
+
 
 function App() {
   return (
     <div> 
-      <h1 className="text-center font-bold text-red-500">Test</h1>
+      <Hero />
+      <Vision />
+      <Services />
     </div>
   )
 }
