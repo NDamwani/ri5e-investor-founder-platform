@@ -3,6 +3,8 @@ import Root from "./Root";
 import Login from "../Login";
 import App from "../../App";
 import { createBrowserRouter } from "react-router-dom";
+import VerificationCodeInput from "../VerificationCodeInput/VerificationCodeInput";
+import MentorProfile from "../Mentorinfo/MentorProfile";
 
 export const router = createBrowserRouter([
   {
@@ -18,6 +20,14 @@ export const router = createBrowserRouter([
         path: "/login",
         element: <Login />,
       },
+      {
+        path: "/verificationcode",
+        element: <VerificationCodeInput/>,
+      },
+      {
+        path: "/mentorprofile",
+        element: <MentorProfile/>,
+      }
     ],
   },
 ]);
