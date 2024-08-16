@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { navLinks } from "../lib/constants/data";
 import MobDropdown from "./MobDropdown";
 
@@ -20,9 +21,9 @@ export default function Header() {
             <ul className="flex gap-8 h-full text-2xl">
               {navLinks.map((navlink) => (
                 <li key={navlink.link} className="content-center h-full">
-                  <a href={navlink.link} className="hover:font-medium">
+                  <Link to={navlink.link} className="hover:font-medium">
                     {navlink.title}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

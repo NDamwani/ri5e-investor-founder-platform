@@ -5,19 +5,19 @@ export const navLinks = [
     },
     {
         title: 'Vision',
-        link: '#vision',
+        link: '/#vision',
     },
     {
         title: 'Services',
-        link: '#services',
+        link: '/#services',
     },
     {
         title: 'News',
-        link: '#news',
+        link: '/#news',
     },
     {
         title: 'Team',
-        link: '#team',
+        link: '/#team',
     },
 ]
 
@@ -28,7 +28,7 @@ export const footerLinks = [
     },
     {
         title: 'Team',
-        link: '/team',
+        link: '/#team',
     },
     {
         title: 'Product',

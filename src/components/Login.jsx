@@ -16,8 +16,8 @@ export default function Login() {
     "bg-transparent border border-white text-white font-semibold py-2 px-6 rounded transition hover:bg-gray-300 hover:text-black w-full my-2";
 
   return (
-    <section className="h-[100vh] bg-black text-white">
-      <div className="p-8 flex justify-center items-center ">
+    <section className="min-h-[50rem] flex justify-center content-center">
+      <div className="p-8 flex justify-center items-center">
         <div className="min-w-80">
           <h1 className="text-4xl font-bold text-center">
             {register ? "Register" : "Login"}
