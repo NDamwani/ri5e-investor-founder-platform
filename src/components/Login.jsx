@@ -2,9 +2,11 @@ import { useState } from "react";
 import PrimaryButton from "./common/PrimaryButton";
 import SecondaryButton from "./common/SecondaryButton";
 import Input from "./common/Input";
+import LoginOpt from "./LoginOpt";
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [register, setRegister] = useState(false);
+  const [isMentor, setIsMentor] = useState("");
 
   const handleSecondaryButtonClick = () => {
     setRegister(!register);
@@ -15,12 +17,19 @@ export default function Login() {
   const secondaryButtonClass =
     "bg-transparent border border-white text-white font-semibold py-2 px-6 rounded transition hover:bg-gray-300 hover:text-black w-full my-2";
 
-  return (
+  return isMentor === "" ? (
+    <LoginOpt updateLoginInfo={setIsMentor} />
+  ) : (
     <section className="min-h-[50rem] flex justify-center content-center">
       <div className="p-8 flex justify-center items-center">
         <div className="min-w-80">
           <h1 className="text-4xl font-bold text-center">
             {register ? "Register" : "Login"}
+            {isMentor === "mentor"
+              ? " as Mentor"
+              : isMentor === "productOwner"
+              ? " as Product Owner"
+              : ""}
           </h1>
           <form
             className="mt-8 space-y-6"
@@ -64,8 +73,16 @@ export default function Login() {
                     className={primaryButtonClass}
                   />
                   <SecondaryButton
-                    name={"Not signed up? Register here"}
+                    name={"Already signed up? Login here"}
                     handleClick={handleSecondaryButtonClick}
+                    className={secondaryButtonClass}
+                  />
+                  <SecondaryButton
+                    name={"Go back to login options"}
+                    handleClick={() => {
+                      setIsMentor("");
+                      setRegister(false);
+                    }}
                     className={secondaryButtonClass}
                   />
                 </>
@@ -79,6 +96,11 @@ export default function Login() {
                   <SecondaryButton
                     name={"Not signed up? Register here"}
                     handleClick={handleSecondaryButtonClick}
+                    className={secondaryButtonClass}
+                  />
+                  <SecondaryButton
+                    name={"Go back to login options"}
+                    handleClick={() => setIsMentor("")}
                     className={secondaryButtonClass}
                   />
                 </>
