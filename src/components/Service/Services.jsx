@@ -24,7 +24,7 @@ const Services = () => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8 justify-center">
         {services.map((service, index) => (
-          <div key={index} className="bg-[#1a1a1a] p-8 rounded-lg shadow-lg">
+          <div key={index} className="bg-accent p-8 rounded-lg shadow-lg">
             <h3 className="text-lg font-semibold mb-4">{service.title}</h3>
             <p className="text-sm text-gray-400">{service.description}</p>
           </div>

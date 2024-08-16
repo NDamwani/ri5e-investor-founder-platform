@@ -10,10 +10,12 @@ export default function Team() {
           the world.
         </p>
       </div>
-      <div className="flex flex-col items-center gap-12 p-8 mt-2 md:justify-evenly md:flex-row">
+      <div className="flex flex-col flex-wrap items-center gap-12 p-8 mt-2 md:justify-around md:flex-row">
         <TeamCard name="Nikhil Damwani" />
         <TeamCard name="Parth Rathod" />
         <TeamCard name="Raghav Gupta" />
+        <TeamCard name="Deepak Singh" />
+        <TeamCard name="Subhash Chaudhary" />
       </div>
     </section>
   );

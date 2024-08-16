@@ -5,6 +5,7 @@ import React from "react";
 import Hero from "./components/Hero/Hero";
 import Vision from "./components/Vision/Vision";
 import Services from "./components/Service/Services";
+import News from "./components/News";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Hero />
       <Vision />
       <Services />
+      <News />
       <Team />
       <Footer />
     </div>

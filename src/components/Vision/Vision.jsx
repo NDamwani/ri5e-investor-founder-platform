@@ -1,6 +1,8 @@
+import SecondaryButton from "../common/SecondaryButton";
 import Icosahedral from "./Icosahedral";
 
 const Vision = () => {
+  const secondaryButtonClass = `bg-transparent border border-white text-white font-semibold py-2 px-6 rounded transition hover:bg-gray-300 hover:text-black`;
   return (
     <section
       id="vision"
@@ -17,9 +19,10 @@ const Vision = () => {
         <p className="text-lg mb-8">
           Design. Engineering. Marketing. Investment. Education.
         </p>
-        <button className="bg-transparent border border-white text-white font-semibold py-2 px-6 rounded transition hover:bg-gray-300 hover:text-black">
-          VIEW PORTFOLIO
-        </button>
+        <SecondaryButton
+          name="VIEW PORTFOLIO"
+          className={secondaryButtonClass}
+        />
       </div>
     </section>
   );

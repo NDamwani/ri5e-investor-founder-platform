@@ -1,4 +1,5 @@
 import { navLinks } from "../lib/constants/data";
+import MobDropdown from "./MobDropdown";
 
 export default function Header() {
   return (
@@ -14,7 +15,7 @@ export default function Header() {
             />
           </a>
         </div>
-        <div className="px-8">
+        <div className="px-8 hidden sm:block">
           <nav className="h-full">
             <ul className="flex gap-8 h-full text-2xl">
               {navLinks.map((navlink) => (
@@ -27,6 +28,7 @@ export default function Header() {
             </ul>
           </nav>
         </div>
+        <MobDropdown />
       </div>
     </section>
   );

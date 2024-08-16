@@ -12,6 +12,10 @@ export const navLinks = [
         link: '#services',
     },
     {
+        title: 'News',
+        link: '#news',
+    },
+    {
         title: 'Team',
         link: '#team',
     },
