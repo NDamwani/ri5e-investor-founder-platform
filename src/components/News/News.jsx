@@ -15,7 +15,7 @@ export default function News() {
           <img
             src="logo.jpg"
             alt="News 1"
-            className="h-48 w-full object-cover"
+            className="h-48 w-full object-cover lg:w-80 lg:mx-auto"
           />
           <div className="p-4">
             <h3 className="text-xl font-bold mb-2">
@@ -33,7 +33,7 @@ export default function News() {
           <img
             src="hiringCompany.png"
             alt="News 2"
-            className="h-48 w-full object-cover"
+            className="h-48 w-full object-cover lg:w-80 lg:mx-auto"
           />
           <div className="p-4">
             <h3 className="text-xl font-bold mb-2">Opportunities in Germany</h3>
@@ -50,7 +50,7 @@ export default function News() {
           <img
             src="VSIdeas.png"
             alt="News 3"
-            className="h-48 w-full object-cover"
+            className="h-48 w-full object-cover lg:w-80 lg:mx-auto"
           />
           <div className="p-4">
             <h3 className="text-xl font-bold mb-2">VS Incubating Ideas</h3>

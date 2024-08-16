@@ -4,8 +4,8 @@ export default function Team() {
   return (
     <section id="team" className="bg-black text-white p-4 text-center">
       <div>
-        <h2 className="text-3xl font-bold p-2">Our Team</h2>
-        <p className="text-lg p-2">
+        <h2 className="text-4xl font-bold p-2">Our Team</h2>
+        <p className="text-2xl p-2">
           Our team is made up of the best engineers and designers from around
           the world.
         </p>

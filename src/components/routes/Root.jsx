@@ -1,5 +1,5 @@
-import Header from "../Header";
-import Footer from "../Footer";
+import Header from "../Header/Header";
+import Footer from "../Footer/Footer";
 import { Outlet, ScrollRestoration } from "react-router-dom";
 
 export default function Root() {

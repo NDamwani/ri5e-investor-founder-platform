@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { navLinks } from "../lib/constants/data";
+import { navLinks } from "../../lib/constants/data";
 
 export default function MobDropdown() {
   const [isOpen, setIsopen] = useState(false);

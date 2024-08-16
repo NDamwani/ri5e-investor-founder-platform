@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { navLinks } from "../lib/constants/data";
+import { navLinks } from "../../lib/constants/data";
 import MobDropdown from "./MobDropdown";
 
 export default function Header() {
