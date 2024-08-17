@@ -1,8 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { navLinks } from "../../lib/constants/data";
 import MobDropdown from "./MobDropdown";
+import PrimaryButton from "../common/PrimaryButton";
 
 export default function Header() {
+  const navigate = useNavigate();
   return (
     <section className="bg-black text-white">
       <div className="flex justify-between">
@@ -28,6 +30,15 @@ export default function Header() {
               ))}
             </ul>
           </nav>
+        </div>
+        <div className="p-4 self-center">
+          <PrimaryButton
+            name="Login"
+            className="bg-white text-black font-semibold py-2 px-6 rounded transition hover:bg-gray-300"
+            handleClick={() => {
+              navigate("/login");
+            }}
+          />
         </div>
         <MobDropdown />
       </div>

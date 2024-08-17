@@ -1,8 +1,8 @@
 export const navLinks = [
-    {
-        title: 'Login',
-        link: '/login',
-    },
+    // {
+    //     title: 'Login',
+    //     link: '/login',
+    // },
     {
         title: 'Vision',
         link: '/#vision',

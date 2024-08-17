@@ -6,6 +6,7 @@ import { createBrowserRouter } from "react-router-dom";
 import VerificationCodeInput from "../VerificationCodeInput/VerificationCodeInput";
 import MentorProfile from "../Mentorinfo/MentorProfile";
 import ProductOwnerProfile from "../ProductOwnerInfo/ProductOwnerProfile";
+import MentorMatch from "../MatchPage/MentorMatch";
 
 export const router = createBrowserRouter([
   {
@@ -34,5 +35,9 @@ export const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/match",
+    element: <MentorMatch />,
   },
 ]);

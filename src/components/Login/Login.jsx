@@ -1,9 +1,10 @@
 import { useState } from "react";
-import PrimaryButton from "../common/PrimaryButton";
 import SecondaryButton from "../common/SecondaryButton";
-import Input from "../common/Input";
 import LoginOpt from "./LoginOpt";
 import { Link } from "react-router-dom";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [register, setRegister] = useState(false);
@@ -18,8 +19,34 @@ export default function Login() {
   const secondaryButtonClass =
     "bg-transparent border border-white text-white font-semibold py-2 px-6 rounded transition hover:bg-gray-300 hover:text-black w-full my-2";
 
+  //todo make confirmPassword and name required on register page
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+      confirmPassword: "",
+      name: "",
+    },
+    validationSchema: Yup.object({
+      email: Yup.string().email("Invalid email address").required("Required"),
+      password: Yup.string().required("Required"),
+      confirmPassword: Yup.string().oneOf(
+        [Yup.ref("password"), null],
+        "Passwords must match"
+      ),
+      name: Yup.string(),
+    }),
+    onSubmit: (values) => {
+      console.log(values);
+    },
+  });
+
   return (
-    <section className="h-screen flex flex-col justify-center content-center gap-y-4">
+    <section
+      className={`flex flex-col justify-center content-center gap-y-4 ${
+        register ? "" : "h-screen"
+      }`}
+    >
       <div className="self-center">
         <Link to="/">
           <img
@@ -42,28 +69,88 @@ export default function Login() {
                 ? " as Product Owner"
                 : ""}
             </h1>
-            <form
-              className="mt-8 space-y-6"
-              onSubmit={(e) => {
-                e.preventDefault();
-              }}
-            >
+            <form className="mt-8 space-y-6" onSubmit={formik.handleSubmit}>
               {register && (
-                <Input label="Full Name" type="text" id="full-name" />
+                <div>
+                  <label htmlFor="fullName" className="block text-2xl">
+                    Full Name
+                  </label>
+                  <input
+                    type="text"
+                    id="fullName"
+                    name="name"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.name}
+                    className="p-2 my-2 w-full border-gray-300 rounded-md bg-accent"
+                  />
+                  {formik.touched.name && formik.errors.name ? (
+                    <div className="text-red-500 text-sm">
+                      {formik.errors.name}
+                    </div>
+                  ) : null}
+                </div>
               )}
-              <Input label="Email" type="email" id="email" />
-              <Input
-                label="Password"
-                type={showPassword ? "text" : "password"}
-                id="password"
-              />
+              <div>
+                <label htmlFor="email" className="block text-2xl">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.email}
+                  className="p-2 my-2 w-full border-gray-300 rounded-md bg-accent"
+                />
+                {formik.touched.email && formik.errors.email ? (
+                  <div className="text-red-500 text-sm">
+                    {formik.errors.email}
+                  </div>
+                ) : null}
+              </div>
+              <div>
+                <label htmlFor="password" className="block text-2xl">
+                  Password
+                </label>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  name="password"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.password}
+                  className="p-2 my-2 w-full border-gray-300 rounded-md bg-accent"
+                />
+                {formik.touched.password && formik.errors.password ? (
+                  <div className="text-red-500 text-sm">
+                    {formik.errors.password}
+                  </div>
+                ) : null}
+              </div>
               {register && (
                 <>
-                  <Input
-                    label="Confirm Password"
-                    type={showPassword ? "text" : "password"}
-                    id="password"
-                  />
+                  <div>
+                    <label htmlFor="confirmPassword" className="block text-2xl">
+                      Confirm Password
+                    </label>
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      id="confirmPassword"
+                      name="confirmPassword"
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.confirmPassword}
+                      className="p-2 my-2 w-full border-gray-300 rounded-md bg-accent"
+                    />
+                    {formik.touched.confirmPassword &&
+                    formik.errors.confirmPassword ? (
+                      <div className="text-red-500 text-sm">
+                        {formik.errors.confirmPassword}
+                      </div>
+                    ) : null}
+                  </div>
                 </>
               )}
               <div className="flex">
@@ -81,15 +168,14 @@ export default function Login() {
               <div className="px-6">
                 {register ? (
                   <>
-                    <PrimaryButton
-                      name="Register"
-                      type="submit"
-                      className={primaryButtonClass}
-                    />
+                    <button className={primaryButtonClass} type="submit">
+                      Register
+                    </button>
                     <SecondaryButton
                       name={"Already signed up? Login here"}
                       handleClick={handleSecondaryButtonClick}
                       className={secondaryButtonClass}
+                      type={"button"}
                     />
                     <SecondaryButton
                       name={"Go back to login options"}
@@ -97,25 +183,26 @@ export default function Login() {
                         setIsMentor("");
                         setRegister(false);
                       }}
+                      type={"button"}
                       className={secondaryButtonClass}
                     />
                   </>
                 ) : (
                   <>
-                    <PrimaryButton
-                      name="Login"
-                      type="submit"
-                      className={primaryButtonClass}
-                    />
+                    <button className={primaryButtonClass} type="submit">
+                      Login
+                    </button>
                     <SecondaryButton
                       name={"Not signed up? Register here"}
                       handleClick={handleSecondaryButtonClick}
                       className={secondaryButtonClass}
+                      type={"button"}
                     />
                     <SecondaryButton
                       name={"Go back to login options"}
                       handleClick={() => setIsMentor("")}
                       className={secondaryButtonClass}
+                      type={"button"}
                     />
                   </>
                 )}
