@@ -1,8 +1,4 @@
 export const navLinks = [
-    // {
-    //     title: 'Login',
-    //     link: '/login',
-    // },
     {
         title: 'Vision',
         link: '/#vision',
@@ -18,6 +14,17 @@ export const navLinks = [
     {
         title: 'Team',
         link: '/#team',
+    },
+]
+
+export const productOwnerNavLinks = [
+    {
+        title: 'Inbox',
+        link: '/product-owner/inbox',
+    },
+    {
+        title: 'Mentor Match',
+        link: '/product-owner/match',
     },
 ]
 

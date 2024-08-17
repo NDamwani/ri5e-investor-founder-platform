@@ -7,6 +7,7 @@ import VerificationCodeInput from "../VerificationCodeInput/VerificationCodeInpu
 import MentorProfile from "../Mentorinfo/MentorProfile";
 import ProductOwnerProfile from "../ProductOwnerInfo/ProductOwnerProfile";
 import MentorMatch from "../MatchPage/MentorMatch";
+import Inbox from "../Inbox/Inbox";
 
 export const router = createBrowserRouter([
   {
@@ -30,14 +31,22 @@ export const router = createBrowserRouter([
         path: "/product-profile",
         element: <ProductOwnerProfile />,
       },
+      {
+        path: "/product-owner/match",
+        element: <MentorMatch />,
+      },
+      {
+        path: "/product-owner/inbox",
+        element: <Inbox />,
+      },
+      {
+        path: "/mentor/inbox",
+        element: <Inbox />,
+      },
     ],
   },
   {
     path: "/login",
     element: <Login />,
-  },
-  {
-    path: "/match",
-    element: <MentorMatch />,
   },
 ]);
