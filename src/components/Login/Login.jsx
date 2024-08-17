@@ -1,25 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SecondaryButton from "../common/SecondaryButton";
 import LoginOpt from "./LoginOpt";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { constants } from "../../utility/constants";
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [register, setRegister] = useState(false);
-  const [isMentor, setIsMentor] = useState("");
+  const [isMentor, setIsMentor] = useState(true);
+  const { axiosPost, axiosGet } = useAxiosPrivate();
+  const navigate = useNavigate();
 
   const handleSecondaryButtonClick = () => {
     setRegister(!register);
-  };
+  };  
 
   const primaryButtonClass =
     "bg-white text-black font-semibold py-2 px-6 rounded transition hover:bg-gray-300 w-full my-2";
   const secondaryButtonClass =
     "bg-transparent border border-white text-white font-semibold py-2 px-6 rounded transition hover:bg-gray-300 hover:text-black w-full my-2";
 
-  //todo make confirmPassword and name required on register page
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -36,10 +41,61 @@ export default function Login() {
       ),
       name: Yup.string(),
     }),
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      if (register) {
+        try {
+          const response = await axiosPost(isMentor ? constants.MENTORSIGNUP : constants.PRODUCTSIGNUP, {
+            email: values.email,
+            fullName: values.name,
+            password: values.password,
+
+          });
+
+          if (response.message === "Verification code sent to your email id") {
+
+            console.log("Registration successful", response);
+            navigate("/verification-code");
+          } else if(response.status==="401 Unauthorized") {
+
+            console.log("User already Registered try logging in");
+            toast.error('User Already Registered, Try Logging In'); 
+          }
+        } catch (error) {
+          console.error("API call failed", error);
+
+        }
+      } else {
+        console.log(values);
+
+      }
+      
     },
   });
+
+
+  // const fetchWorkflowList = async () => {
+  //   console.log("inside submit button")
+ 
+  //   try {
+  //     const response = await axiosGet(constants.POSTS);
+
+  //     if (response) {
+  //       console.log(response);
+  //     } else {
+  //       console.error('Error fetching workflow list: ');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching workflow list: ', error);
+  //   } finally {
+
+    
+  //   }
+  // };
+
+
+  // useEffect(()=>{
+  //   fetchWorkflowList();
+  // },[]);
 
   return (
     <section

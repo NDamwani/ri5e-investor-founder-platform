@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { constants } from "../../utility/constants";
 
 const VerificationCodeInput = () => {
   const [code, setCode] = useState(new Array(6).fill('')); 
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const email = queryParams.get('email'); 
+  const { axiosPost } = useAxiosPrivate();
 
   const handleChange = (element, index) => {
     if (isNaN(element.value)) return false;
@@ -10,16 +17,13 @@ const VerificationCodeInput = () => {
       ...code.map((d, idx) => (idx === index ? element.value : d)),
     ]);
 
-    
-    
     if (element.nextSibling && element.value !== '') {
-        element.nextSibling.focus();
+      element.nextSibling.focus();
     } else if (element.previousSibling && element.value === '') {
-        element.previousSibling.focus();
+      element.previousSibling.focus();
     }
-};
+  };
 
-console.log(code);
   const handleKeyDown = (e, index) => {
     if (e.key === 'Backspace' && code[index] === '') {
       const updatedCode = [...code];
@@ -28,6 +32,27 @@ console.log(code);
       if (e.target.previousSibling) {
         e.target.previousSibling.focus();
       }
+    }
+  };
+
+  const handleSubmit = async () => {
+    const verificationCode = code.join('');
+    try {
+      const response = await axiosPost(constants.VERIFY, {
+        email: email,
+        code: verificationCode,
+      });
+
+      if (response.message === "User verified successfully") {
+        console.log("Verification successful", response);
+
+      } else {
+        console.error("Verification failed", response);
+
+      }
+    } catch (error) {
+      console.error("API call failed", error);
+
     }
   };
 
@@ -73,6 +98,12 @@ console.log(code);
           );
         })}
       </div>
+      <button
+        onClick={handleSubmit}
+        className="mt-6 bg-white text-black font-semibold py-2 px-6 rounded transition hover:bg-gray-300"
+      >
+        Verify
+      </button>
     </div>
   );
 };
