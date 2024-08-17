@@ -29,4 +29,24 @@ html {
     .scrollbar::-webkit-scrollbar-thumb:hover {
       background: #5e5959;
     }
+
+    .mentor-scroolbar::-webkit-scrollbar {
+      width: 10px;
+      height: 20px;
+    }
+  
+    .mentor-scroolbar::-webkit-scrollbar-track {
+      border-radius: 100vh;
+      background: #000;
+    }
+  
+    .mentor-scroolbar::-webkit-scrollbar-thumb {
+      background: #1a1a1a;
+      border-radius: 100vh;
+      border: 3px solid #000;
+    }
+
+    .mentor-scroolbar::-webkit-scrollbar-thumb:hover {
+      background: #5e5959;
+    }
   }

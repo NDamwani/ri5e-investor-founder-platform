@@ -8,6 +8,24 @@ const mentorList = [
   {
     mentorName: "Rahul Kumar",
   },
+  {
+    mentorName: "abc",
+  },
+  {
+    mentorName: "xyz",
+  },
+  {
+    mentorName: "stu",
+  },
+  {
+    mentorName: "def",
+  },
+  {
+    mentorName: "pqr",
+  },
+  {
+    mentorName: "mno",
+  },
 ];
 
 const mentorMessages = [
@@ -104,7 +122,7 @@ export default function Inbox() {
         <div className="border-b-4 border-white/10 p-4 sm:p-8">
           <p className="text-4xl">Messages</p>
         </div>
-        <div>
+        <div className="mentor-scroolbar h-[480px] overflow-y-scroll">
           <ul>
             {mentorList.map((mentor) => (
               <li
@@ -126,7 +144,7 @@ export default function Inbox() {
         </div>
       </div>
       <div
-        className={`h-[600px] w-[600px] bg-accent ${currMentor !== "" ? "" : "max-sm:hidden"}`}
+        className={`h-[600px] w-full bg-accent sm:w-[600px] ${currMentor !== "" ? "" : "max-sm:hidden"}`}
       >
         <div className="relative p-4 text-center">
           {currMentor.mentorName !== "" && (
@@ -149,7 +167,7 @@ export default function Inbox() {
           className={`scrollbar h-[360px] ${currMentor.mentorName !== "" ? "overflow-y-scroll" : ""}`}
         >
           <ul>
-            {currMentor?.messages?.length > 0 &&
+            {currMentor.messages.length > 0 &&
               currMentor?.messages.map((message, index) => (
                 <li key={index} className="p-4">
                   <p className="text-lg font-bold">{message.sender}</p>
