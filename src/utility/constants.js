@@ -7,6 +7,7 @@ export const constants = {
     MENTORSIGNUP :'/mentor/sign-up',
     PRODUCTSIGNUP:'/product/sign-up',
     VERIFY:'/verify',
+    
     // POSTS:'https://jsonplaceholder.typicode.com/posts',
     
     
