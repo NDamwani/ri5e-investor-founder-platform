@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useMemo } from "react";
 import { io } from "socket.io-client";
+import { constants } from "../utility/constants";
 
 const SocketContext = createContext(null);
 
@@ -9,7 +10,7 @@ export const useSocket = () => {
 };
 
 export const SocketProvider = (props) => {
-  const socket = useMemo(() => io("localhost:3005"), []); //add backend server
+  const socket = useMemo(() => io(constants.BASE_URL), []); //add backend server
   return (
     <SocketContext.Provider value={socket}>
       {props.children}

@@ -9,6 +9,7 @@ import ProductOwnerProfile from "../ProductOwnerInfo/ProductOwnerProfile";
 import MentorMatch from "../MatchPage/MentorMatch";
 import Inbox from "../Inbox/Inbox";
 import ProductPage from "../productAnalyticsComponents/productPage";
+import Calendly from "../Calendly/Calendly";
 
 export const router = createBrowserRouter([
   {
@@ -51,6 +52,10 @@ export const router = createBrowserRouter([
       {
         path: "/product/dashboard",
         element: <ProductPage />,
+      },
+      {
+        path: "/connect/calendly",
+        element: <Calendly />,
       },
     ],
   },

@@ -1,70 +1,44 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-
-const mentorList = [
-  {
-    mentorName: "Harshil Kumar",
-  },
-  {
-    mentorName: "Rahul Kumar",
-  },
-];
-
-const mentorMessages = [
-  {
-    mentorName: "Harshil Kumar",
-    messages: [
-      {
-        sender: "Parth",
-        message: "Hello Harshil I would like to have you as my mentor",
-      },
-      {
-        sender: "Harshil",
-        message: "Hey Parth, I would love to be your mentor",
-      },
-    ],
-  },
-  {
-    mentorName: "Rahul Kumar",
-    messages: [
-      {
-        sender: "Parth",
-        message: "Hello Rahul I would like to have you as my mentor",
-      },
-      {
-        sender: "Rahul",
-        message: "Hey Parth, I would love to be your mentor",
-      },
-      {
-        sender: "Parth",
-        message: "Hello Rahul I would like to have you as my mentor",
-      },
-      {
-        sender: "Rahul",
-        message: "Hey Parth, I would love to be your mentor",
-      },
-      {
-        sender: "Parth",
-        message: "Hello Rahul I would like to have you as my mentor",
-      },
-      {
-        sender: "Rahul",
-        message: "Hey Parth, I would love to be your mentor",
-      },
-      {
-        sender: "Parth",
-        message: "Hello Rahul I would like to have you as my mentor",
-      },
-      {
-        sender: "Rahul",
-        message: "Hey Parth, I would love to be your mentor",
-      },
-    ],
-  },
-];
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { useUser } from "../../context/UserContextProvider";
+import { constants } from "../../utility/constants";
+import { mentorList, mentorMessages } from "../../lib/constants/data";
 
 export default function Inbox() {
   const location = useLocation();
+  const state = location.state;
+  const id = state ? state.id : null;
+  const { axiosPost, axiosGet } = useAxiosPrivate();
+  const { decodeToken } = useUser();
+  const userId = decodeToken(JSON.parse(localStorage.getItem("userToken"))).id;
+
+  useEffect(() => {
+    const initiateConversation = async () => {
+      try {
+        if (!id) return;
+        const response = await axiosPost(constants.INITIATECONVERSATION, {
+          senderId: userId,
+          recieverId: id,
+        });
+        console.log(response);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    const fetchConversations = async () => {
+      try {
+        const response = await axiosGet(
+          constants.GETPRODUCTCONVERSATION + userId,
+        );
+        console.log(response);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    initiateConversation();
+    fetchConversations();
+  }, []);
 
   const [currMentor, setCurrMentor] = useState(() => {
     if (location.state) {

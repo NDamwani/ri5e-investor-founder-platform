@@ -42,3 +42,67 @@ export const footerLinks = [
         link: '/product',
     },
 ]
+
+
+//dummy chat data
+export const mentorList = [
+    {
+      mentorName: "Harshil Kumar",
+    },
+    {
+      mentorName: "Rahul Kumar",
+    },
+  ];
+  
+ export const mentorMessages = [
+    {
+      mentorName: "Harshil Kumar",
+      messages: [
+        {
+          sender: "Parth",
+          message: "Hello Harshil I would like to have you as my mentor",
+        },
+        {
+          sender: "Harshil",
+          message: "Hey Parth, I would love to be your mentor",
+        },
+      ],
+    },
+    {
+      mentorName: "Rahul Kumar",
+      messages: [
+        {
+          sender: "Parth",
+          message: "Hello Rahul I would like to have you as my mentor",
+        },
+        {
+          sender: "Rahul",
+          message: "Hey Parth, I would love to be your mentor",
+        },
+        {
+          sender: "Parth",
+          message: "Hello Rahul I would like to have you as my mentor",
+        },
+        {
+          sender: "Rahul",
+          message: "Hey Parth, I would love to be your mentor",
+        },
+        {
+          sender: "Parth",
+          message: "Hello Rahul I would like to have you as my mentor",
+        },
+        {
+          sender: "Rahul",
+          message: "Hey Parth, I would love to be your mentor",
+        },
+        {
+          sender: "Parth",
+          message: "Hello Rahul I would like to have you as my mentor",
+        },
+        {
+          sender: "Rahul",
+          message: "Hey Parth, I would love to be your mentor",
+        },
+      ],
+    },
+  ];
