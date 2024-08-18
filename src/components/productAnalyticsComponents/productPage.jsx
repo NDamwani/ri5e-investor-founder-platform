@@ -1,6 +1,6 @@
 import React from 'react';
 import MainComponent from "./MainComponent";
-import TaskScheduler from "./TaskScheduler"; // Import TaskScheduler
+import TaskScheduler from "./TaskScheduler"; 
 
 function ProductPage() {
   return (
@@ -12,7 +12,7 @@ function ProductPage() {
             {/* <Header /> */}
             <MainComponent />
           </div>
-          <TaskScheduler /> {/* Add TaskScheduler here */}
+          <TaskScheduler />
         </div>
       </div>
     </div>
