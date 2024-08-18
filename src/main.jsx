@@ -9,12 +9,12 @@ import UserContextProvider from "./context/UserContextProvider";
 
 createRoot(document.getElementById("root")).render(
   <>
-    {/* <SocketProvider> */}
-    <UserContextProvider>
-      <RouterProvider router={router}>
-        <Root />
-      </RouterProvider>
-    </UserContextProvider>
-    {/* </SocketProvider> */}
+    <SocketProvider>
+      <UserContextProvider>
+        <RouterProvider router={router}>
+          <Root />
+        </RouterProvider>
+      </UserContextProvider>
+    </SocketProvider>
   </>,
 );

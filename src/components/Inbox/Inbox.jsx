@@ -4,11 +4,13 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useUser } from "../../context/UserContextProvider";
 import { constants } from "../../utility/constants";
 import { mentorMessages } from "../../lib/constants/data";
+import { useSocket } from "../../context/SocketProvider";
 
 export default function Inbox() {
   const location = useLocation();
   const { axiosPost, axiosGet } = useAxiosPrivate();
   const { decodeToken, isMentor } = useUser();
+  const socket = useSocket();
   const userId = decodeToken(JSON.parse(localStorage.getItem("userToken"))).id;
 
   const [conversationList, setConversationList] = useState([]);
@@ -16,7 +18,19 @@ export default function Inbox() {
   const [messageSend, setMessageSend] = useState(false);
   const [message, setMessage] = useState("");
 
-  console.log("current conversation: ", currentConversation);
+  // console.log("current conversation: ", currentConversation);
+
+  useEffect(() => {
+    socket.emit("addUser", userId);
+    socket.on("getMessage", (data) => {
+      // console.log("message received: ", data);
+
+      setCurrentConversation((prev) => ({
+        ...prev,
+        messages: [...prev.messages, data],
+      }));
+    });
+  }, [socket]);
 
   useEffect(() => {
     const fetchConversations = async () => {
@@ -26,16 +40,16 @@ export default function Inbox() {
             constants.GETPRODUCTCONVERSATION + userId,
           );
 
-          console.log("Is mentor call", response);
+          // console.log("Is mentor call", response);
           setConversationList(response.conversationData);
-          console.log("URL", constants.GETPRODUCTCONVERSATION + userId);
+          // console.log("URL", constants.GETPRODUCTCONVERSATION + userId);
         } else {
           const response = await axiosGet(
             constants.GETMENTORCONVERSATION + userId,
           );
-          console.log("URL", constants.GETMENTORCONVERSATION + userId);
+          // console.log("URL", constants.GETMENTORCONVERSATION + userId);
 
-          console.log("Product call", response);
+          // console.log("Product call", response);
           setConversationList(response.conversationData);
         }
       } catch (e) {
@@ -45,49 +59,9 @@ export default function Inbox() {
     fetchConversations();
   }, []);
 
-  useEffect(() => {
-    console.log("conversation list: ", conversationList);
-  }, [conversationList]);
-
   // useEffect(() => {
-  //   const initiateConversation = async () => {
-  //     try {
-  //       if (!id) return;
-  //       const response = await axiosPost(constants.INITIATECONVERSATION, {
-  //         senderId: userId,
-  //         recieverId: id,
-  //       });
-  //       console.log(response);
-  //     } catch (e) {
-  //       console.log(e);
-  //     }
-  //   };
-  //   // const fetchConversations = async () => {
-  //   //   try {
-  //   //     if (isMentor) {
-  //   //       const response = await axiosGet(
-  //   //         constants.GETPRODUCTCONVERSATION + userId,
-  //   //       );
-
-  //   //       console.log("Is mentor call", response);
-  //   //       setConversationList(response.conversationData);
-  //   //       console.log("URL", constants.GETPRODUCTCONVERSATION + userId);
-  //   //     } else {
-  //   //       const response = await axiosGet(
-  //   //         constants.GETMENTORCONVERSATION + userId,
-  //   //       );
-  //   //       console.log("URL", constants.GETMENTORCONVERSATION + userId);
-
-  //   //       console.log("Product call", response);
-  //   //       setConversationList(response.conversationData);
-  //   //     }
-  //   //   } catch (e) {
-  //   //     console.log(e);
-  //   //   }
-  //   // };
-  //   initiateConversation();
-  //   // fetchConversations();
-  // }, []);
+  //   console.log("conversation list: ", conversationList);
+  // }, [conversationList]);
 
   // static data to remove
   const [currMentor, setCurrMentor] = useState(() => {
@@ -109,7 +83,7 @@ export default function Inbox() {
     try {
       if (!convId) return;
       const response = await axiosGet(constants.GETMENTORMESSAGES + convId);
-      console.log("mentor messages: ", response);
+      // console.log("mentor messages: ", response);
       return response.messageData;
     } catch (e) {
       console.log(e);
@@ -121,7 +95,8 @@ export default function Inbox() {
     if (message === "") return;
     try {
       setMessageSend(!messageSend);
-      console.log("sender id:", userId);
+      // console.log("sender id:", userId);
+      //to check
       const response = await axiosPost(constants.SENDMESSAGE, {
         conversationId: currentConversation.conversationId,
         senderId: userId,
@@ -129,6 +104,13 @@ export default function Inbox() {
         receiverId: currentConversation.receiverId,
       });
       const msgs = await fetchMessages(currentConversation.conversationId);
+      socket.emit("sendMessage", {
+        senderId: userId,
+        recieverId: currentConversation.receiverId,
+        message,
+        conversationId: currentConversation.conversationId,
+      });
+
       setCurrentConversation({
         ...currentConversation,
         messages: msgs,
