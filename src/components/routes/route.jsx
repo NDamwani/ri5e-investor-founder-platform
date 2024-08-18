@@ -10,6 +10,7 @@ import MentorMatch from "../MatchPage/MentorMatch";
 import Inbox from "../Inbox/Inbox";
 import ProductPage from "../productAnalyticsComponents/productPage";
 import Calendly from "../Calendly/Calendly";
+import ProductMatch from "../MatchPage/ProductMatch";
 
 export const router = createBrowserRouter([
   {
@@ -34,19 +35,15 @@ export const router = createBrowserRouter([
         element: <ProductOwnerProfile />,
       },
       {
-        path: "/product-owner/match",
-        element: <MentorMatch />,
+        path: "/product/match",
+        element: <ProductMatch />,
       },
       {
         path: "/mentor/match",
         element: <MentorMatch />,
       },
       {
-        path: "/product-owner/inbox",
-        element: <Inbox />,
-      },
-      {
-        path: "/mentor/inbox",
+        path: "/inbox",
         element: <Inbox />,
       },
       {

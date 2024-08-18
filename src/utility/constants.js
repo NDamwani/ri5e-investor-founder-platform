@@ -1,7 +1,7 @@
 export const constants = {
     // Base URLs
-    // BASE_URL: 'https://ri5e-51fcdab10009.herokuapp.com/',
-    BASE_URL: 'http://localhost:3005',
+    BASE_URL: 'https://ri5e-51fcdab10009.herokuapp.com/',
+    // BASE_URL: 'http://localhost:3005',
     // BASE_URL: 'https://jsonplaceholder.typicode.com/',
 
     // Signup URL
@@ -34,13 +34,26 @@ export const constants = {
     
     //Get all Mentors
     GETALLMENTORS:'/mentor/all-mentors',
-    
+    GETBESTMENTOR:'/product/match/',
+    //Get all Products
+    GETALLPRODUCTS:'/product/all-products',
 
 
     //Chat API
     INITIATECONVERSATION: '/message/conversation',
+    //Message
+    SENDMESSAGE: "/message/message",
+
     //Product Conversation
-    GETPRODUCTCONVERSATION: '/message/product/conversation/'
+    GETPRODUCTCONVERSATION: '/message/product/conversation/',
+    GETMENTORCONVERSATION: '/message/mentor/conversation/',
+
+    //GET Messages
+    GETMENTORMESSAGES: '/message/mentor/message/',
+    GETPRODUCTMESSAGES: '/message/product/message/'
+
+
+
   };
   
   

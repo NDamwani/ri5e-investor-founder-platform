@@ -1,12 +1,10 @@
 import React from 'react';
-import Sidebar from "./Sidebar";
-import Header from "./Header";
 import MainComponent from "./MainComponent";
 import TaskScheduler from "./TaskScheduler"; // Import TaskScheduler
 
 function ProductPage() {
   return (
-    <div className='flex-1 flex '>
+    <div className='flex-1 '>
       <div className="flex">
         {/* <Sidebar /> */}
         <div className="flex-1 flex mx-auto">

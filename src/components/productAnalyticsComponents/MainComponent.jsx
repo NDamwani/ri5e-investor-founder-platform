@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { FaThumbsUp, FaClock, FaCheckCircle, FaCalendarAlt, FaEllipsisH, FaRegClock, FaMoneyBill } from 'react-icons/fa';
+import { PopupButton } from "react-calendly"; // Import the PopupButton
+import useAxiosPrivate from '../../hooks/useAxiosPrivate'; // Assuming you have this hook
+import { constants } from '../../utility/constants';
 
 const data = [
   { date: '01', thisMonth: 6, lastMonth: 7 },
@@ -39,18 +42,49 @@ const tasks = [
     },
   ];
 
-const MainComponent = () => {
+const MainComponent = ({ userId }) => {
+  const axiosPrivate = useAxiosPrivate();
+  const [userName, setUserName] = useState(''); // State to store user name
+
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        const response = await axiosGet(
+          constants.GETPRODUCTPROFILE + prductOwnerId,
+        );
+        console.log(response);
+        if (response) {
+          const date = new Date(response.product?.dateOfOperations);
+          const formattedDate = date.toISOString().split("T")[0];
+          setProductOwnerData({
+            ...response.product,
+            dateOfOperations: formattedDate,
+          });
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    fetchProfileData();
+  }, []);
+
+  const CALENDLY_URL = "https://calendly.com/parth-rathod12/product-owner-meet";
+
   return (
     <div className="p-8 bg-black text-white ">
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold">Hello, Margaret</h1>
+          <h1 className="text-3xl font-bold">Hello, {userName}</h1>
           <p className="text-gray-400">Track team progress here. You almost reach a goal!</p>
         </div>
         <div className="flex items-center space-x-4">
           <span>16 May, 2023</span>
-          <FaCalendarAlt className="text-xl text-gray-400" />
+          <PopupButton
+            url={CALENDLY_URL}
+            rootElement={document.getElementById("root")}
+            text={<FaCalendarAlt className="text-xl text-gray-400 cursor-pointer" />}
+          />
         </div>
       </div>
 

@@ -15,11 +15,11 @@ const TaskScheduler = () => {
       if (data && Array.isArray(data.tasks)) {
         setTasks(data.tasks);
       } else {
-        setTasks([]); // Default to empty array if tasks are not returned correctly
+        setTasks([]); 
       }
     } catch (error) {
       console.error('Error fetching tasks:', error);
-      setTasks([]); // Default to empty array in case of error
+      setTasks([]); 
     }
   };
 
@@ -62,7 +62,7 @@ const TaskScheduler = () => {
   });
 
   return (
-    <div className="w-1/4 flex justify-center items-start">
+    <div className="w-1/4 flex justify-end items-start">
       <div className="bg-gray-900 text-white rounded-lg space-y-4 w-full">
         {/* Heading */}
         <h2 className="text-xl font-semibold text-center py-4">Task Scheduler</h2>
@@ -126,7 +126,7 @@ const TaskScheduler = () => {
                 className="flex items-center justify-between bg-gray-800 p-3 rounded-lg mb-2"
               >
                 <div>
-                  <span className="block text-lg font-semibold">{task.task}</span>
+                  <span className="block text-lg font-semibold">{task.tasks}</span>
                   <span
                     className={`block text-sm ${
                       task.status === 'done'
