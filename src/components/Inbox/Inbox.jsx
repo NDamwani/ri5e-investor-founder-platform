@@ -19,23 +19,27 @@ export default function Inbox() {
   const [messageSend, setMessageSend] = useState(false);
   const [message, setMessage] = useState("");
 
-  console.log("current conversation: ", currentConversation);
+  console.log("curr messages: ", currMessages);
 
   useEffect(() => {
     const fetchMessages = async () => {
       try {
         if (!currentConversation) return;
-        if (isMentor) {
-          const response = await axiosGet(
-            constants.GETMENTORMESSAGES + currentConversation.conversationId,
-          );
-          console.log("mentor messages: ", response);
-        } else {
-          const response = await axiosGet(
-            constants.GETPRODUCTMESSAGES + currentConversation.conversationId,
-          );
-          console.log("product messages: ", response);
-        }
+        const response = await axiosGet(
+          constants.GETPRODUCTMESSAGES + currentConversation.conversationId,
+        );
+        console.log("mentor messages: ", response);
+        setCurrMessages(response.messageData);
+
+        // if (isMentor) {
+
+        // } else {
+        //   const response = await axiosGet(
+        //     constants.GETPRODUCTMESSAGES + currentConversation.conversationId,
+        //   );
+        //   console.log("product messages: ", response);
+        //   setCurrMessages(response.messageData);
+        // }
       } catch (e) {
         console.log(e);
       }
@@ -131,7 +135,7 @@ export default function Inbox() {
         </div>
         <div className="mentor-scroolbar h-[480px] overflow-y-scroll">
           <ul>
-            {conversationList.map((mentor, index) => (
+            {conversationList?.map((mentor, index) => (
               <li
                 key={index}
                 onClick={() => {
@@ -178,10 +182,12 @@ export default function Inbox() {
           className={`scrollbar h-[360px] ${currMentor.mentorName !== "" ? "overflow-y-scroll" : ""}`}
         >
           <ul>
-            {currentConversation?.messages?.map((message, index) => (
+            {currMessages?.map((message, index) => (
               <li key={index} className="p-4">
-                <p className="text-lg font-bold">{message.sender}</p>
-                <p>{message.message}</p>
+                <p className="text-lg font-bold">
+                  {message?.details?.fullName}
+                </p>
+                <p>{message?.details?.message}</p>
               </li>
             ))}
           </ul>
