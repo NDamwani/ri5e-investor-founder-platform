@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import PrimaryButton from "../common/PrimaryButton";
 // import Calendly from "../Calendly/Calendly";
 
-export default function MentorCard({
+export default function ProductCard({
   mentorId,
   mentorName,
   mentorEmail,
@@ -19,7 +19,7 @@ export default function MentorCard({
           className="h-full w-full rounded-lg object-contain"
         />
       </div>
-      <div className="flex flex-col gap-x-4 md:w-96 lg:flex-row">
+      <div className="flex flex-col gap-x-8 md:w-96 lg:flex-row">
         <div className="flex flex-col gap-y-4">
           <h2 className="text-2xl font-semibold md:text-4xl">{mentorName}</h2>
           <p className="text-lg">{mentorEmail}</p>

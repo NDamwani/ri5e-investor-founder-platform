@@ -30,7 +30,8 @@ export const constants = {
     
     //Get all Mentors
     GETALLMENTORS:'/mentor/all-mentors',
-    
+    //Get all Products
+    GETALLPRODUCTS:'/product/all-products',
 
 
     //Chat API
