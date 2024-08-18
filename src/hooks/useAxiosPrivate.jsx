@@ -47,19 +47,17 @@ const useAxiosPrivate = () => {
       return response.data;
     } catch (error) {
       if (error.response && error.response.status == 400) {
-        if(error.response?.data?.message){
-          toast.error(error.response?.data?.message)
-        }else {
-           toast.error("Somthing went wrong!");
+        if (error.response?.data?.message) {
+          toast.error(error.response?.data?.message);
+        } else {
+          toast.error("Somthing went wrong!");
         }
-        
-      
+
         // toast.error(error?.response?.data?.msg?.slice("(").split("{")[0] + ".\n Please Check Console for more info");
-        
       } else {
         toast.error("Somthing went wrong!");
       }
-      return error
+      return error;
     }
   };
   const axiosPost = async (url, data) => {
@@ -67,23 +65,18 @@ const useAxiosPrivate = () => {
       const response = await axiosPrivate.post(url, data);
       return response.data;
     } catch (error) {
-     
       if (error.response && error.response.status == 400) {
-        if(error.response?.data?.message){
-          toast.error(error.response?.data?.message)
-        }else {
-           toast.error("Somthing went wrong!");
+        if (error.response?.data?.message) {
+          toast.error(error.response?.data?.message);
+        } else {
+          toast.error("Somthing went wrong!");
         }
-        
-      
-        // toast.error(error?.response?.data?.msg?.slice("(").split("{")[0] + ".\n Please Check Console for more info");
-        
-      } else {
 
+        // toast.error(error?.response?.data?.msg?.slice("(").split("{")[0] + ".\n Please Check Console for more info");
+      } else {
         toast.error("Somthing went wrong!");
-       
       }
-      return error
+      return error;
     }
   };
   const axiosPatch = async (url, data) => {
@@ -92,19 +85,17 @@ const useAxiosPrivate = () => {
       return response.data;
     } catch (error) {
       if (error.response && error.response.status == 400) {
-        if(error.response?.data?.message){
-          toast.error(error.response?.data?.message)
-        }else {
-           toast.error("Somthing went wrong!");
+        if (error.response?.data?.message) {
+          toast.error(error.response?.data?.message);
+        } else {
+          toast.error("Somthing went wrong!");
         }
-        
-      
+
         // toast.error(error?.response?.data?.msg?.slice("(").split("{")[0] + ".\n Please Check Console for more info");
-        
       } else {
         toast.error("Somthing went wrong!");
       }
-      return error
+      return error;
     }
   };
   const axiosPut = async (url, data) => {
@@ -113,19 +104,17 @@ const useAxiosPrivate = () => {
       return response.data;
     } catch (error) {
       if (error.response && error.response.status == 400) {
-        if(error.response?.data?.message){
-          toast.error(error.response?.data?.message)
-        }else {
-           toast.error("Somthing went wrong!");
+        if (error.response?.data?.message) {
+          toast.error(error.response?.data?.message);
+        } else {
+          toast.error("Somthing went wrong!");
         }
-        
-      
+
         // toast.error(error?.response?.data?.msg?.slice("(").split("{")[0] + ".\n Please Check Console for more info");
-        
       } else {
         toast.error("Somthing went wrong!");
       }
-      return error
+      return error;
     }
   };
   const axiosDelete = async (url) => {
@@ -134,15 +123,25 @@ const useAxiosPrivate = () => {
       return response.data;
     } catch (error) {
       if (error.response) {
-        toast.error(error?.response?.data?.msg?.slice("(").split("{")[0] + ".\n Please Check Console for more info");
+        toast.error(
+          error?.response?.data?.msg?.slice("(").split("{")[0] +
+            ".\n Please Check Console for more info",
+        );
       } else {
         toast.error("Somthing went wrong!");
       }
-      return error
+      return error;
     }
   };
 
-  return { axiosPrivate, axiosGet, axiosPost, axiosPatch, axiosDelete,axiosPut };
+  return {
+    axiosPrivate,
+    axiosGet,
+    axiosPost,
+    axiosPatch,
+    axiosDelete,
+    axiosPut,
+  };
 };
 
 export default useAxiosPrivate;

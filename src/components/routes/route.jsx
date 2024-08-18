@@ -36,6 +36,10 @@ export const router = createBrowserRouter([
         element: <MentorMatch />,
       },
       {
+        path: "/mentor/match",
+        element: <MentorMatch />,
+      },
+      {
         path: "/product-owner/inbox",
         element: <Inbox />,
       },

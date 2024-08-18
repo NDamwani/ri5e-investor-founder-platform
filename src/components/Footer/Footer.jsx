@@ -2,18 +2,18 @@ import { footerLinks } from "../../lib/constants/data";
 
 export default function Footer() {
   return (
-    <footer className="bg-black text-white text-center">
+    <footer className="bg-black text-center text-white">
       <div className="flex flex-col p-4">
-        <p className="text-4xl font-bold mb-2">Ri5e</p>
-        <hr className="bg-white/20 h-1 rounded-xl w-[90%] self-center" />
+        <p className="mb-2 text-4xl font-bold">Ri5e</p>
+        <hr className="h-1 w-[90%] self-center rounded-xl bg-white/20" />
       </div>
-      <div className="flex p-4 justify-center gap-x-12">
+      <div className="flex justify-center gap-x-12 p-4">
         <div className="flex justify-center">
           <ul>
             {footerLinks.map((footerLink) => (
               <li
                 key={footerLink.link}
-                className="p-2 hover:font-medium hover:scale-110 active:scale-105 text-xl"
+                className="p-2 text-xl hover:scale-110 hover:font-medium active:scale-105"
               >
                 <a href={footerLink.link}>{footerLink.title}</a>
               </li>
@@ -32,9 +32,9 @@ export default function Footer() {
       
         </div> */}
       </div>
-      <div className="p-4 flex flex-col justify-center">
-        <hr className="bg-white/20 h-1 rounded-xl w-[90%] self-center my-2" />
-        <p className="text-xs text-white/50 font-medium">
+      <div className="flex flex-col justify-center p-4">
+        <hr className="my-2 h-1 w-[90%] self-center rounded-xl bg-white/20" />
+        <p className="text-xs font-medium text-white/50">
           {" "}
           &copy;{Date().split(" ")[3]} Ri5e. All Rights Reserved.{" "}
         </p>

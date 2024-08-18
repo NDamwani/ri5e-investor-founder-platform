@@ -8,24 +8,6 @@ const mentorList = [
   {
     mentorName: "Rahul Kumar",
   },
-  {
-    mentorName: "abc",
-  },
-  {
-    mentorName: "xyz",
-  },
-  {
-    mentorName: "stu",
-  },
-  {
-    mentorName: "def",
-  },
-  {
-    mentorName: "pqr",
-  },
-  {
-    mentorName: "mno",
-  },
 ];
 
 const mentorMessages = [
@@ -117,7 +99,7 @@ export default function Inbox() {
   return (
     <section className="my-32 flex flex-col items-center gap-8 sm:flex-row sm:justify-center">
       <div
-        className={`h-[600px] min-w-80 bg-accent/80 text-center ${currMentor !== "" ? "max-sm:hidden" : ""}`}
+        className={`h-[600px] w-80 bg-accent/80 text-center ${currMentor !== "" ? "max-sm:hidden" : ""}`}
       >
         <div className="border-b-4 border-white/10 p-4 sm:p-8">
           <p className="text-4xl">Messages</p>

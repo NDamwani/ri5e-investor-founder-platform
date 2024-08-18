@@ -5,13 +5,16 @@ import "./index.css";
 import { router } from "./components/routes/route";
 import Root from "./components/routes/Root";
 import { SocketProvider } from "./context/SocketProvider";
+import UserContextProvider from "./context/UserContextProvider";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router}>
-      <SocketProvider>
+    {/* <SocketProvider> */}
+    <UserContextProvider>
+      <RouterProvider router={router}>
         <Root />
-      </SocketProvider>
-    </RouterProvider>
-  </StrictMode>
+      </RouterProvider>
+    </UserContextProvider>
+    {/* </SocketProvider> */}
+  </StrictMode>,
 );

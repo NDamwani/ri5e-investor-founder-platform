@@ -37,7 +37,7 @@ html {
   
     .mentor-scroolbar::-webkit-scrollbar-track {
       border-radius: 100vh;
-      background: #000;
+      background: #3f3c3c;
     }
   
     .mentor-scroolbar::-webkit-scrollbar-thumb {

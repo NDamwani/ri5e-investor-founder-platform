@@ -2,15 +2,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { navLinks, productOwnerNavLinks } from "../../lib/constants/data";
 import MobDropdown from "./MobDropdown";
 import PrimaryButton from "../common/PrimaryButton";
-import { useState } from "react";
+import { useUser } from "../../context/UserContextProvider";
+import SecondaryButton from "../common/SecondaryButton";
 
 export default function Header() {
   const navigate = useNavigate();
-  const [user, setUser] = useState({
-    name: "Parth",
-    token: "",
-    isProductOwner: true,
-  });
+  const { isLoggedIn, isMentor, logout } = useUser();
   return (
     <section className="bg-black text-white">
       <div className="flex justify-between">
@@ -24,29 +21,32 @@ export default function Header() {
             />
           </a>
         </div>
-        <div className="px-8 hidden sm:block">
+        <div className="hidden px-8 sm:block">
           <nav className="h-full">
-            <ul className="flex gap-8 h-full text-2xl">
-              {user.name === "" &&
+            <ul className="flex h-full gap-8 text-2xl">
+              {!isLoggedIn &&
                 navLinks.map((navlink) => (
-                  <li key={navlink.link} className="content-center h-full">
+                  <li key={navlink.link} className="h-full content-center">
                     <Link to={navlink.link} className="hover:font-medium">
                       {navlink.title}
                     </Link>
                   </li>
                 ))}
-              {user.name !== "" &&
-                user.isProductOwner &&
+              {isLoggedIn &&
+                !isMentor &&
                 productOwnerNavLinks.map((navlink) => (
-                  <li key={navlink.link} className="content-center h-full">
+                  <li key={navlink.link} className="h-full content-center">
                     <Link to={navlink.link} className="hover:font-medium">
                       {navlink.title}
                     </Link>
                   </li>
                 ))}
-              {user.name !== "" && !user.isProductOwner && (
-                <li className="content-center h-full">
-                  <Link to="/mentor/inbox" className="hover:font-medium">
+              {isLoggedIn && isMentor && (
+                <li className="h-full content-center">
+                  <Link to="/mentor/match" className="mx-4 hover:font-medium">
+                    Products
+                  </Link>
+                  <Link to="/mentor/inbox" className="mx-4 hover:font-medium">
                     Inbox
                   </Link>
                 </li>
@@ -54,25 +54,30 @@ export default function Header() {
             </ul>
           </nav>
         </div>
-        <div className="p-4 self-center">
-          {user.name === "" ? (
+        <div className="self-center p-4">
+          {!isLoggedIn ? (
             <PrimaryButton
               name="Login"
-              className="bg-white text-black font-semibold py-2 px-6 rounded transition hover:bg-gray-300"
+              className="rounded bg-white px-6 py-2 font-semibold text-black transition hover:bg-gray-300"
               handleClick={() => {
                 navigate("/login");
               }}
             />
           ) : (
             <div className="flex flex-col gap-4">
-              <p className="text-center">{user.name}</p>
               <PrimaryButton
                 name="My Profile"
-                className="bg-white text-black font-semibold p-1 rounded transition hover:bg-gray-300"
+                className="rounded bg-white p-1 font-semibold text-black transition hover:bg-gray-300"
                 handleClick={() => {
-                  navigate(
-                    user.isProductOwner ? "/product-profile" : "/mentor-profile"
-                  );
+                  navigate(isMentor ? "/mentor-profile" : "/product-profile");
+                }}
+              />
+              <SecondaryButton
+                name="Logout"
+                className="rounded border border-white bg-transparent px-6 py-2 font-semibold text-white transition hover:bg-gray-300 hover:text-black"
+                handleClick={() => {
+                  logout();
+                  navigate("/");
                 }}
               />
             </div>
