@@ -1,5 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import PrimaryButton from "../common/PrimaryButton";
+import { constants } from "../../utility/constants";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { useUser } from "../../context/UserContextProvider";
 
 export default function ProductCard({
   productId,
@@ -10,6 +13,22 @@ export default function ProductCard({
   experience,
 }) {
   const navigate = useNavigate();
+  const { axiosPost } = useAxiosPrivate();
+  const { decodeToken } = useUser();
+  const userId = decodeToken(JSON.parse(localStorage.getItem("userToken"))).id;
+
+  const initiateConversation = async ({ id }) => {
+    try {
+      const response = await axiosPost(constants.INITIATECONVERSATION, {
+        senderId: userId,
+        recieverId: id,
+      });
+      console.log(response);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <div className="mt-8 flex w-full items-center justify-center gap-8 rounded-3xl bg-accent p-4 px-12 sm:w-1/2 md:justify-evenly md:p-8">
       <div className="my-auto hidden rounded-lg bg-white md:block md:w-48">
@@ -32,7 +51,8 @@ export default function ProductCard({
           <PrimaryButton
             name="Message"
             type="button"
-            handleClick={() => {
+            handleClick={async () => {
+              await initiateConversation({ id: productId });
               navigate("/inbox", {
                 state: {
                   id: productId,

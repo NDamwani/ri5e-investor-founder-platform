@@ -34,6 +34,7 @@ export const constants = {
     
     //Get all Mentors
     GETALLMENTORS:'/mentor/all-mentors',
+    GETBESTMENTOR:'/product/match/',
     //Get all Products
     GETALLPRODUCTS:'/product/all-products',
 
@@ -49,7 +50,10 @@ export const constants = {
 
     //GET Messages
     GETMENTORMESSAGES: '/message/mentor/message/',
-    GETPRODUCTMESSAGES: '/message/product/message/',
+    GETPRODUCTMESSAGES: '/message/product/message/'
+
+
+
   };
   
   

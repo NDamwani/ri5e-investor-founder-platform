@@ -1,20 +1,18 @@
-import React from 'react';
-import Sidebar from "./Sidebar";
-import Header from "./Header";
+import React from "react";
 import MainComponent from "./MainComponent";
-import TaskScheduler from "./TaskScheduler"; // Import TaskScheduler
+import TaskScheduler from "./TaskScheduler";
 
 function ProductPage() {
   return (
-    <div className='flex-1 flex '>
+    <div className="flex-1">
       <div className="flex">
         {/* <Sidebar /> */}
-        <div className="flex-1 flex mx-auto">
-          <div className="flex-1 flex flex-col">
+        <div className="mx-auto flex flex-1">
+          <div className="flex flex-1 flex-col">
             {/* <Header /> */}
             <MainComponent />
           </div>
-          <TaskScheduler /> {/* Add TaskScheduler here */}
+          <TaskScheduler />
         </div>
       </div>
     </div>

@@ -7,64 +7,18 @@ import { mentorMessages } from "../../lib/constants/data";
 
 export default function Inbox() {
   const location = useLocation();
-  const state = location.state;
-  const id = state ? state.id : null;
   const { axiosPost, axiosGet } = useAxiosPrivate();
   const { decodeToken, isMentor } = useUser();
   const userId = decodeToken(JSON.parse(localStorage.getItem("userToken"))).id;
 
   const [conversationList, setConversationList] = useState([]);
   const [currentConversation, setCurrentConversation] = useState([]);
-  const [currMessages, setCurrMessages] = useState([]);
   const [messageSend, setMessageSend] = useState(false);
   const [message, setMessage] = useState("");
 
-  console.log("curr messages: ", currMessages);
+  console.log("current conversation: ", currentConversation);
 
   useEffect(() => {
-    const fetchMessages = async () => {
-      try {
-        if (!currentConversation) return;
-        const response = await axiosGet(
-          constants.GETPRODUCTMESSAGES + currentConversation.conversationId,
-        );
-        console.log("mentor messages: ", response);
-        setCurrMessages(response.messageData);
-
-        // if (isMentor) {
-
-        // } else {
-        //   const response = await axiosGet(
-        //     constants.GETPRODUCTMESSAGES + currentConversation.conversationId,
-        //   );
-        //   console.log("product messages: ", response);
-        //   setCurrMessages(response.messageData);
-        // }
-      } catch (e) {
-        console.log(e);
-      }
-    };
-
-    fetchMessages();
-  }, [currentConversation, messageSend]);
-
-  useEffect(() => {
-    console.log("conversation list: ", conversationList);
-  }, [conversationList]);
-
-  useEffect(() => {
-    const initiateConversation = async () => {
-      try {
-        if (!id) return;
-        const response = await axiosPost(constants.INITIATECONVERSATION, {
-          senderId: userId,
-          recieverId: id,
-        });
-        console.log(response);
-      } catch (e) {
-        console.log(e);
-      }
-    };
     const fetchConversations = async () => {
       try {
         if (isMentor) {
@@ -74,10 +28,12 @@ export default function Inbox() {
 
           console.log("Is mentor call", response);
           setConversationList(response.conversationData);
+          console.log("URL", constants.GETPRODUCTCONVERSATION + userId);
         } else {
           const response = await axiosGet(
             constants.GETMENTORCONVERSATION + userId,
           );
+          console.log("URL", constants.GETMENTORCONVERSATION + userId);
 
           console.log("Product call", response);
           setConversationList(response.conversationData);
@@ -86,10 +42,54 @@ export default function Inbox() {
         console.log(e);
       }
     };
-    initiateConversation();
     fetchConversations();
   }, []);
 
+  useEffect(() => {
+    console.log("conversation list: ", conversationList);
+  }, [conversationList]);
+
+  // useEffect(() => {
+  //   const initiateConversation = async () => {
+  //     try {
+  //       if (!id) return;
+  //       const response = await axiosPost(constants.INITIATECONVERSATION, {
+  //         senderId: userId,
+  //         recieverId: id,
+  //       });
+  //       console.log(response);
+  //     } catch (e) {
+  //       console.log(e);
+  //     }
+  //   };
+  //   // const fetchConversations = async () => {
+  //   //   try {
+  //   //     if (isMentor) {
+  //   //       const response = await axiosGet(
+  //   //         constants.GETPRODUCTCONVERSATION + userId,
+  //   //       );
+
+  //   //       console.log("Is mentor call", response);
+  //   //       setConversationList(response.conversationData);
+  //   //       console.log("URL", constants.GETPRODUCTCONVERSATION + userId);
+  //   //     } else {
+  //   //       const response = await axiosGet(
+  //   //         constants.GETMENTORCONVERSATION + userId,
+  //   //       );
+  //   //       console.log("URL", constants.GETMENTORCONVERSATION + userId);
+
+  //   //       console.log("Product call", response);
+  //   //       setConversationList(response.conversationData);
+  //   //     }
+  //   //   } catch (e) {
+  //   //     console.log(e);
+  //   //   }
+  //   // };
+  //   initiateConversation();
+  //   // fetchConversations();
+  // }, []);
+
+  // static data to remove
   const [currMentor, setCurrMentor] = useState(() => {
     if (location.state) {
       const filterMentor = mentorMessages.filter(
@@ -105,6 +105,17 @@ export default function Inbox() {
     };
   });
 
+  const fetchMessages = async (convId) => {
+    try {
+      if (!convId) return;
+      const response = await axiosGet(constants.GETMENTORMESSAGES + convId);
+      console.log("mentor messages: ", response);
+      return response.messageData;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (message === "") return;
@@ -116,6 +127,11 @@ export default function Inbox() {
         senderId: userId,
         message,
         receiverId: currentConversation.receiverId,
+      });
+      const msgs = await fetchMessages(currentConversation.conversationId);
+      setCurrentConversation({
+        ...currentConversation,
+        messages: msgs,
       });
       console.log("send message:", response);
       setMessage("");
@@ -138,13 +154,14 @@ export default function Inbox() {
             {conversationList?.map((mentor, index) => (
               <li
                 key={index}
-                onClick={() => {
+                onClick={async () => {
+                  const msgs = await fetchMessages(mentor.conversationId);
                   setCurrentConversation({
                     conversationId: mentor.conversationId,
                     mentorName: mentor.details.fullName,
                     receiverId: mentor.details.recieverId,
                     email: mentor.details.email,
-                    messages: [], // change with on click call using conv id
+                    messages: msgs, // change with on click call using conv id
                   });
                 }}
               >
@@ -178,16 +195,16 @@ export default function Inbox() {
               : "Select a mentor"}
           </p>
         </div>
-        <div
-          className={`scrollbar h-[360px] ${currMentor.mentorName !== "" ? "overflow-y-scroll" : ""}`}
-        >
+        <div className={`scrollbar h-[360px] overflow-y-scroll`}>
           <ul>
-            {currMessages?.map((message, index) => (
+            {currentConversation?.messages?.map((message, index) => (
               <li key={index} className="p-4">
-                <p className="text-lg font-bold">
-                  {message?.details?.fullName}
+                <p className="text-lg font-bold">{message.sender}</p>
+                <p
+                  className={`p-2 ${message.senderId === userId ? "" : "text-right"}`}
+                >
+                  {message.message}
                 </p>
-                <p>{message?.details?.message}</p>
               </li>
             ))}
           </ul>

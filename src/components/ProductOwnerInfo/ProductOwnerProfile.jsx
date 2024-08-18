@@ -112,7 +112,7 @@ const MentorProfile = () => {
         Complete Your Product Profile
       </h1>
 
-      <div className="relative mb-6">
+      {/* <div className="relative mb-6">
         <div className="h-32 w-32 overflow-hidden rounded-full border-4 border-gray-300">
           {companyLogo ? (
             <img
@@ -125,6 +125,21 @@ const MentorProfile = () => {
               Upload Company Logo
             </div>
           )}
+        </div>
+        <input
+          type="file"
+          className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+          onChange={handleImageChange}
+        />
+      </div> */}
+
+      <div className="relative mb-6">
+        <div className="h-32 w-32 overflow-hidden rounded-full border-4 border-gray-300">
+          <img
+            src="/company_logo.jpg"
+            alt="Profile"
+            className="h-full w-full object-cover"
+          />
         </div>
         <input
           type="file"

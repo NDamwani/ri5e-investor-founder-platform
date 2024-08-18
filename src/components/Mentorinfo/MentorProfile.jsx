@@ -98,7 +98,7 @@ const MentorProfile = () => {
     <div className="flex min-h-screen flex-col items-center bg-black p-6 text-white">
       <h1 className="mb-6 text-4xl font-bold">Complete Your Profile</h1>
 
-      <div className="relative mb-6">
+      {/* <div className="relative mb-6">
         <div className="h-32 w-32 overflow-hidden rounded-full border-4 border-gray-300">
           {profileImage ? (
             <img
@@ -111,6 +111,21 @@ const MentorProfile = () => {
               Upload Photo
             </div>
           )}
+        </div>
+        <input
+          type="file"
+          className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+          onChange={handleImageChange}
+        />
+      </div> */}
+
+      <div className="relative mb-6">
+        <div className="h-32 w-32 overflow-hidden rounded-full border-4 border-gray-300">
+          <img
+            src="dppppp.jpeg"
+            alt="Profile"
+            className="h-full w-full object-cover"
+          />
         </div>
         <input
           type="file"

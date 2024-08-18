@@ -1,57 +1,74 @@
 import { useEffect, useState } from "react";
 import MentorCard from "./MentorCard";
+import { jwtDecode } from "jwt-decode";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { constants } from "../../utility/constants";
 
 export default function MentorMatch() {
-  const [mentors, setMentors] = useState([]);
+  const [bestMatch, setBestMatch] = useState(null);
+  const [remainingMentors, setRemainingMentors] = useState([]);
   const { axiosGet } = useAxiosPrivate();
+
   useEffect(() => {
-    const fetchAllMentors = async () => {
+    const fetchProfileData = async () => {
       try {
-        const response = await axiosGet(constants.GETALLMENTORS);
-        const mentors = response.mentors;
-        const filteredMentors = mentors.filter(
-          (mentor) => mentor.areaOfExpertise?.length > 0,
-        );
-        const updateFilteredMentors = filteredMentors.map((mentor) => {
-          const areaOfExpertise = mentor.areaOfExpertise.join(", ");
-          return {
-            _id: mentor._id,
-            fullName: mentor.fullName,
-            email: mentor.email,
-            skills: areaOfExpertise,
-            experience: mentor.yearsOfExperience,
-          };
-        });
-        setMentors(updateFilteredMentors);
-      } catch (error) {
-        console.log(error);
+        const token = localStorage.getItem("userToken");
+
+        const decodedToken = jwtDecode(token);
+        console.log("decodedToken", decodedToken);
+        console.log("token", token);
+        const userId = decodedToken.id;
+        console.log("userId", userId);
+
+        const response = await axiosGet(constants.GETBESTMENTOR + userId);
+        console.log("response", response);
+
+        if (response) {
+          setBestMatch(response.bestMatches[0]);
+          setRemainingMentors(response.remainingMentors);
+        }
+      } catch (e) {
+        console.log(e);
       }
     };
 
-    fetchAllMentors();
+    fetchProfileData();
   }, []);
+
   return (
     <section className="text-center">
-      <h1 className="text-4xl md:text-6xl">Best Mentor Matches</h1>
-      <div className="flex flex-col items-center">
-        {mentors.map((mentor) => (
+      <h1 className="mb-8 text-4xl md:text-6xl">Best Mentor Match</h1>
+      <div className="mb-16 flex flex-col items-center">
+        {bestMatch ? (
           <MentorCard
-            key={mentor._id}
-            mentorId={mentor._id}
-            mentorName={mentor.fullName}
-            mentorEmail={mentor.email}
-            mentorSkills={mentor.skills}
-            mentorExperience={mentor.experience}
+            key={bestMatch._id}
+            mentorId={bestMatch._id}
+            mentorName={bestMatch.fullName}
+            mentorEmail={bestMatch.email}
+            mentorSkills={bestMatch.skills?.join(", ")}
+            mentorExperience={bestMatch.experience}
           />
-        ))}
+        ) : (
+          <p>No best match found.</p>
+        )}
       </div>
-      <h2 className="mt-12 text-4xl sm:mt-20 md:text-6xl">Available Mentors</h2>
+
+      <h2 className="mb-8 text-4xl md:text-6xl">Other Mentors</h2>
       <div className="flex flex-col items-center">
-        {/* <MentorCard />
-        <MentorCard />
-        <MentorCard /> */}
+        {remainingMentors.length > 0 ? (
+          remainingMentors.map((mentor) => (
+            <MentorCard
+              key={mentor._id}
+              mentorId={mentor._id}
+              mentorName={mentor.fullName}
+              mentorEmail={mentor.email}
+              mentorSkills={mentor.skills?.join(", ")}
+              mentorExperience={mentor.experience}
+            />
+          ))
+        ) : (
+          <p>No other mentors available.</p>
+        )}
       </div>
     </section>
   );
