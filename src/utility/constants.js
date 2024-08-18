@@ -49,7 +49,7 @@ export const constants = {
 
     //GET Messages
     GETMENTORMESSAGES: '/message/mentor/message/',
-    GETPRODUCTMESSAGES: '/message/product/message/'
+    GETPRODUCTMESSAGES: '/message/product/message/',
   };
   
   

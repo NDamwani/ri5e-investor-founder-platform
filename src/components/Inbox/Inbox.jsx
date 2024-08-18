@@ -15,7 +15,34 @@ export default function Inbox() {
 
   const [conversationList, setConversationList] = useState([]);
   const [currentConversation, setCurrentConversation] = useState([]);
+  const [currMessages, setCurrMessages] = useState([]);
+  const [messageSend, setMessageSend] = useState(false);
+  const [message, setMessage] = useState("");
+
   console.log("current conversation: ", currentConversation);
+
+  useEffect(() => {
+    const fetchMessages = async () => {
+      try {
+        if (!currentConversation) return;
+        if (isMentor) {
+          const response = await axiosGet(
+            constants.GETMENTORMESSAGES + currentConversation.conversationId,
+          );
+          console.log("mentor messages: ", response);
+        } else {
+          const response = await axiosGet(
+            constants.GETPRODUCTMESSAGES + currentConversation.conversationId,
+          );
+          console.log("product messages: ", response);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    fetchMessages();
+  }, [currentConversation, messageSend]);
 
   useEffect(() => {
     console.log("conversation list: ", conversationList);
@@ -41,7 +68,7 @@ export default function Inbox() {
             constants.GETPRODUCTCONVERSATION + userId,
           );
 
-          console.log("Ismentor call", response);
+          console.log("Is mentor call", response);
           setConversationList(response.conversationData);
         } else {
           const response = await axiosGet(
@@ -73,12 +100,12 @@ export default function Inbox() {
       messages: [],
     };
   });
-  const [message, setMessage] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (message === "") return;
     try {
+      setMessageSend(!messageSend);
       console.log("sender id:", userId);
       const response = await axiosPost(constants.SENDMESSAGE, {
         conversationId: currentConversation.conversationId,
@@ -88,6 +115,7 @@ export default function Inbox() {
       });
       console.log("send message:", response);
       setMessage("");
+      setMessageSend(!messageSend);
     } catch (e) {
       console.log(e);
     }
@@ -109,16 +137,16 @@ export default function Inbox() {
                 onClick={() => {
                   setCurrentConversation({
                     conversationId: mentor.conversationId,
-                    mentorName: mentor.product.fullName,
-                    receiverId: mentor.product.recieverId,
-                    email: mentor.product.email,
+                    mentorName: mentor.details.fullName,
+                    receiverId: mentor.details.recieverId,
+                    email: mentor.details.email,
                     messages: [], // change with on click call using conv id
                   });
                 }}
               >
                 <div className="my-2 border-b-4 border-white/10 p-4 hover:cursor-pointer">
                   <p className="text-lg font-semibold">
-                    {mentor.product.fullName}
+                    {mentor.details?.fullName}
                   </p>
                 </div>
               </li>
