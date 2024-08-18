@@ -52,7 +52,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/product/dashboard",
-        element: <ProductPage />,
+        element: <ProductPage/>,
       },
       {
         path: "/connect/calendly",

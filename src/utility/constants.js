@@ -27,6 +27,10 @@ export const constants = {
     //Get Product Profile
     GETPRODUCTPROFILE:'/product/product-profile/',
     // POSTS:'https://jsonplaceholder.typicode.com/posts',
+
+
+    //Tasks
+    TASKS:'task/tasks',
     
     //Get all Mentors
     GETALLMENTORS:'/mentor/all-mentors',
