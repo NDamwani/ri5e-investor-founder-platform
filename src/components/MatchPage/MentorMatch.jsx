@@ -12,10 +12,10 @@ export default function MentorMatch() {
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-        // Retrieve the token from local storage
+
         const token = localStorage.getItem('userToken');
 
-        // Decode the token to extract the user ID
+
         const decodedToken = jwtDecode(token);
         console.log("decodedToken", decodedToken);
         console.log("token", token);

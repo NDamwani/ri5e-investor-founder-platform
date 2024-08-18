@@ -11,6 +11,7 @@ import Inbox from "../Inbox/Inbox";
 import ProductPage from "../productAnalyticsComponents/productPage";
 import Calendly from "../Calendly/Calendly";
 import ProductMatch from "../MatchPage/ProductMatch";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
 export const router = createBrowserRouter([
   {
@@ -28,31 +29,59 @@ export const router = createBrowserRouter([
       },
       {
         path: "/mentor-profile",
-        element: <MentorProfile />,
+        element: (
+          <ProtectedRoute>
+            <MentorProfile />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/product-profile",
-        element: <ProductOwnerProfile />,
+        element: (
+          <ProtectedRoute>
+            <ProductOwnerProfile />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/product/match",
-        element: <ProductMatch />,
+        element: (
+          <ProtectedRoute>
+            <ProductMatch />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/mentor/match",
-        element: <MentorMatch />,
+        element: (
+          <ProtectedRoute>
+            <MentorMatch />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/inbox",
-        element: <Inbox />,
+        element: (
+          <ProtectedRoute>
+            <Inbox />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/product/dashboard",
-        element: <ProductPage/>,
+        element: (
+          <ProtectedRoute>
+            <ProductPage />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/connect/calendly",
-        element: <Calendly />,
+        element: (
+          <ProtectedRoute>
+            <Calendly />
+          </ProtectedRoute>
+        ),
       },
     ],
   },
