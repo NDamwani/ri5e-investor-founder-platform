@@ -1,26 +1,24 @@
+import React from 'react';
+import Sidebar from "./Sidebar";
 import Header from "./Header";
-import ChatRoom from "./ChatRoom";
 import MainComponent from "./MainComponent";
-
+import TaskScheduler from "./TaskScheduler"; // Import TaskScheduler
 
 function ProductPage() {
   return (
-    <div className="mb-10">
-      <div className="flex h-screen bg-gray-900">
+    <div className='flex-1 flex '>
+      <div className="flex">
         {/* <Sidebar /> */}
-        <div className="flex-1 flex">
-          <div className="flex-1 flex flex-col ">
-            <Header />
+        <div className="flex-1 flex mx-auto">
+          <div className="flex-1 flex flex-col">
+            {/* <Header /> */}
             <MainComponent />
           </div>
-          <ChatRoom />
+          <TaskScheduler /> {/* Add TaskScheduler here */}
         </div>
       </div>
     </div>
   );
 }
-
-
-
 
 export default ProductPage;
