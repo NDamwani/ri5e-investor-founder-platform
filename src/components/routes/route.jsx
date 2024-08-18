@@ -8,6 +8,7 @@ import MentorProfile from "../Mentorinfo/MentorProfile";
 import ProductOwnerProfile from "../ProductOwnerInfo/ProductOwnerProfile";
 import MentorMatch from "../MatchPage/MentorMatch";
 import Inbox from "../Inbox/Inbox";
+import ProductPage from "../productAnalyticsComponents/productPage";
 
 export const router = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ export const router = createBrowserRouter([
       {
         path: "/mentor/inbox",
         element: <Inbox />,
+      },
+      {
+        path: "/product/dashboard",
+        element: <ProductPage />,
       },
     ],
   },
