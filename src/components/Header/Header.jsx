@@ -34,10 +34,16 @@ export default function Header() {
                 ))}
               {isLoggedIn && !isMentor && (
                 <li className="h-full content-center">
+                  <Link
+                    to="/product/dashboard"
+                    className="mx-4 hover:font-medium"
+                  >
+                    Dashboard
+                  </Link>
                   <Link to="/mentor/match" className="mx-4 hover:font-medium">
                     Mentor Match
                   </Link>
-                  <Link to="/mentor/inbox" className="mx-4 hover:font-medium">
+                  <Link to="/inbox" className="mx-4 hover:font-medium">
                     Inbox
                   </Link>
                 </li>
@@ -47,7 +53,7 @@ export default function Header() {
                   <Link to="/product/match" className="mx-4 hover:font-medium">
                     Product Match
                   </Link>
-                  <Link to="/mentor/inbox" className="mx-4 hover:font-medium">
+                  <Link to="/inbox" className="mx-4 hover:font-medium">
                     Inbox
                   </Link>
                 </li>

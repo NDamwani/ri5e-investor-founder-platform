@@ -3,15 +3,23 @@ import { useLocation } from "react-router-dom";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useUser } from "../../context/UserContextProvider";
 import { constants } from "../../utility/constants";
-import { mentorList, mentorMessages } from "../../lib/constants/data";
+import { mentorMessages } from "../../lib/constants/data";
 
 export default function Inbox() {
   const location = useLocation();
   const state = location.state;
   const id = state ? state.id : null;
   const { axiosPost, axiosGet } = useAxiosPrivate();
-  const { decodeToken } = useUser();
+  const { decodeToken, isMentor } = useUser();
   const userId = decodeToken(JSON.parse(localStorage.getItem("userToken"))).id;
+
+  const [conversationList, setConversationList] = useState([]);
+  const [currentConversation, setCurrentConversation] = useState([]);
+  console.log("current conversation: ", currentConversation);
+
+  useEffect(() => {
+    console.log("conversation list: ", conversationList);
+  }, [conversationList]);
 
   useEffect(() => {
     const initiateConversation = async () => {
@@ -28,10 +36,21 @@ export default function Inbox() {
     };
     const fetchConversations = async () => {
       try {
-        const response = await axiosGet(
-          constants.GETPRODUCTCONVERSATION + userId,
-        );
-        console.log(response);
+        if (isMentor) {
+          const response = await axiosGet(
+            constants.GETPRODUCTCONVERSATION + userId,
+          );
+
+          console.log("Ismentor call", response);
+          setConversationList(response.conversationData);
+        } else {
+          const response = await axiosGet(
+            constants.GETMENTORCONVERSATION + userId,
+          );
+
+          console.log("Product call", response);
+          setConversationList(response.conversationData);
+        }
       } catch (e) {
         console.log(e);
       }
@@ -56,18 +75,22 @@ export default function Inbox() {
   });
   const [message, setMessage] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const newMessage = {
-      sender: "Parth",
-      message: message,
-    };
-    const newMentor = {
-      mentorName: currMentor.mentorName,
-      messages: [...currMentor.messages, newMessage],
-    };
-    setCurrMentor(newMentor);
-    setMessage("");
+    if (message === "") return;
+    try {
+      console.log("sender id:", userId);
+      const response = await axiosPost(constants.SENDMESSAGE, {
+        conversationId: currentConversation.conversationId,
+        senderId: userId,
+        message,
+        receiverId: currentConversation.receiverId,
+      });
+      console.log("send message:", response);
+      setMessage("");
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -80,19 +103,23 @@ export default function Inbox() {
         </div>
         <div className="mentor-scroolbar h-[480px] overflow-y-scroll">
           <ul>
-            {mentorList.map((mentor) => (
+            {conversationList.map((mentor, index) => (
               <li
-                key={mentor.mentorName}
+                key={index}
                 onClick={() => {
-                  setCurrMentor(
-                    mentorMessages.filter(
-                      (message) => message.mentorName === mentor.mentorName,
-                    )[0],
-                  );
+                  setCurrentConversation({
+                    conversationId: mentor.conversationId,
+                    mentorName: mentor.product.fullName,
+                    receiverId: mentor.product.recieverId,
+                    email: mentor.product.email,
+                    messages: [], // change with on click call using conv id
+                  });
                 }}
               >
                 <div className="my-2 border-b-4 border-white/10 p-4 hover:cursor-pointer">
-                  <p className="text-lg font-semibold">{mentor.mentorName}</p>
+                  <p className="text-lg font-semibold">
+                    {mentor.product.fullName}
+                  </p>
                 </div>
               </li>
             ))}
@@ -100,7 +127,7 @@ export default function Inbox() {
         </div>
       </div>
       <div
-        className={`h-[600px] w-full bg-accent sm:w-[600px] ${currMentor !== "" ? "" : "max-sm:hidden"}`}
+        className={`h-[600px] w-full bg-accent sm:w-[600px] ${currentConversation ? "" : "max-sm:hidden"}`}
       >
         <div className="relative p-4 text-center">
           {currMentor.mentorName !== "" && (
@@ -114,25 +141,24 @@ export default function Inbox() {
             </button>
           )}
           <p className="text-3xl">
-            {currMentor.mentorName === ""
-              ? "Select a mentor"
-              : currMentor.mentorName}
+            {currentConversation
+              ? currentConversation.mentorName
+              : "Select a mentor"}
           </p>
         </div>
         <div
           className={`scrollbar h-[360px] ${currMentor.mentorName !== "" ? "overflow-y-scroll" : ""}`}
         >
           <ul>
-            {currMentor.messages.length > 0 &&
-              currMentor?.messages.map((message, index) => (
-                <li key={index} className="p-4">
-                  <p className="text-lg font-bold">{message.sender}</p>
-                  <p>{message.message}</p>
-                </li>
-              ))}
+            {currentConversation?.messages?.map((message, index) => (
+              <li key={index} className="p-4">
+                <p className="text-lg font-bold">{message.sender}</p>
+                <p>{message.message}</p>
+              </li>
+            ))}
           </ul>
         </div>
-        <div className={`${currMentor.mentorName === "" ? "hidden" : ""}`}>
+        <div className={`${currentConversation === "" ? "hidden" : ""}`}>
           <form onSubmit={handleSubmit}>
             <div className="p-4">
               <textarea

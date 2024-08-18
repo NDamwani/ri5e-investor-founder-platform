@@ -8,7 +8,7 @@ import { SocketProvider } from "./context/SocketProvider";
 import UserContextProvider from "./context/UserContextProvider";
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
+  <>
     {/* <SocketProvider> */}
     <UserContextProvider>
       <RouterProvider router={router}>
@@ -16,5 +16,5 @@ createRoot(document.getElementById("root")).render(
       </RouterProvider>
     </UserContextProvider>
     {/* </SocketProvider> */}
-  </StrictMode>,
+  </>,
 );

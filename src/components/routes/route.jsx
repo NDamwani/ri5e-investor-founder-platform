@@ -43,16 +43,12 @@ export const router = createBrowserRouter([
         element: <MentorMatch />,
       },
       {
-        path: "/product-owner/inbox",
-        element: <Inbox />,
-      },
-      {
-        path: "/mentor/inbox",
+        path: "/inbox",
         element: <Inbox />,
       },
       {
         path: "/product/dashboard",
-        element: <ProductPage/>,
+        element: <ProductPage />,
       },
       {
         path: "/connect/calendly",

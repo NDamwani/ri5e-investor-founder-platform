@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import PrimaryButton from "../common/PrimaryButton";
-// import Calendly from "../Calendly/Calendly";
 
 export default function MentorCard({
   mentorId,
@@ -32,11 +31,9 @@ export default function MentorCard({
             name="Message"
             type="button"
             handleClick={() => {
-              navigate("/product-owner/inbox", {
+              navigate("/inbox", {
                 state: {
                   id: mentorId,
-                  mentorName: mentorName,
-                  mentorEmail: mentorEmail,
                 },
               });
             }}

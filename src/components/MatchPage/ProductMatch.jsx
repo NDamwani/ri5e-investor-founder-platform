@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import MentorCard from "./MentorCard";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { constants } from "../../utility/constants";
+import ProductCard from "./ProductCard";
 
 export default function ProductMatch() {
   const [products, setProducts] = useState([]);
@@ -10,7 +11,7 @@ export default function ProductMatch() {
     const fetchAllMentors = async () => {
       try {
         const response = await axiosGet(constants.GETALLPRODUCTS);
-        console.log(response.products);
+        // console.log(response.products);
         const products = response.products;
         const filteredProducts = products.filter(
           (product) => product.skills?.length > 0,
@@ -39,13 +40,14 @@ export default function ProductMatch() {
       <h1 className="text-4xl md:text-6xl">Best Product Matches</h1>
       <div className="flex flex-col items-center">
         {products.map((product) => (
-          <MentorCard
+          <ProductCard
             key={product._id}
-            mentorId={product._id}
-            mentorName={product.fullName}
-            mentorEmail={product.email}
-            mentorSkills={product.skills}
-            mentorExperience={product.experience}
+            productId={product._id}
+            companyName={product.companyName}
+            fullName={product.fullName}
+            email={product.email}
+            skills={product.skills}
+            experience={product.experience}
           />
         ))}
       </div>

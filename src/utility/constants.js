@@ -40,8 +40,16 @@ export const constants = {
 
     //Chat API
     INITIATECONVERSATION: '/message/conversation',
+    //Message
+    SENDMESSAGE: "/message/message",
+
     //Product Conversation
-    GETPRODUCTCONVERSATION: '/message/product/conversation/'
+    GETPRODUCTCONVERSATION: '/message/product/conversation/',
+    GETMENTORCONVERSATION: '/message/mentor/conversation/',
+
+    //GET Messages
+    GETMENTORMESSAGES: '/message/mentor/message/',
+    GETPRODUCTMESSAGES: '/message/product/message/'
   };
   
   

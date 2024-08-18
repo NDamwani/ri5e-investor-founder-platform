@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import PrimaryButton from "../common/PrimaryButton";
-// import Calendly from "../Calendly/Calendly";
 
 export default function ProductCard({
-  mentorId,
-  mentorName,
-  mentorEmail,
-  mentorSkills,
-  mentorExperience,
+  productId,
+  companyName,
+  fullName,
+  email,
+  skills,
+  experience,
 }) {
   const navigate = useNavigate();
   return (
@@ -19,12 +19,13 @@ export default function ProductCard({
           className="h-full w-full rounded-lg object-contain"
         />
       </div>
-      <div className="flex flex-col gap-x-8 md:w-96 lg:flex-row">
+      <div className="flex flex-col gap-x-8 lg:flex-row">
         <div className="flex flex-col gap-y-4">
-          <h2 className="text-2xl font-semibold md:text-4xl">{mentorName}</h2>
-          <p className="text-lg">{mentorEmail}</p>
-          <p className="text-lg">Skills: {mentorSkills}</p>
-          <p className="text-lg">Experience: {mentorExperience}</p>
+          <h2 className="text-2xl font-semibold md:text-4xl">{companyName}</h2>
+          <h2 className="text-xl font-semibold md:text-4xl">{fullName}</h2>
+          <p className="text-lg">{email}</p>
+          <p className="text-lg">Skills: {skills}</p>
+          <p className="text-lg">Experience: {experience}</p>
         </div>
 
         <div className="mt-4 flex flex-col justify-center gap-y-2 lg:gap-y-8">
@@ -32,11 +33,9 @@ export default function ProductCard({
             name="Message"
             type="button"
             handleClick={() => {
-              navigate("/product-owner/inbox", {
+              navigate("/inbox", {
                 state: {
-                  id: mentorId,
-                  mentorName: mentorName,
-                  mentorEmail: mentorEmail,
+                  id: productId,
                 },
               });
             }}
@@ -48,13 +47,12 @@ export default function ProductCard({
             handleClick={() => {
               navigate("/mentor/profile", {
                 state: {
-                  mentorId: mentorId,
+                  productId: productId,
                 },
               });
             }}
             className="min-w-40 max-w-60 self-center rounded bg-white p-2 font-semibold text-black transition hover:bg-gray-300"
           />
-          {/* <Calendly /> */}
         </div>
       </div>
     </div>
