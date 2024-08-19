@@ -1,7 +1,7 @@
 export const constants = {
     // Base URLs
-    // BASE_URL: 'https://ri5e-51fcdab10009.herokuapp.com/',
-    BASE_URL: 'http://localhost:3005',
+    BASE_URL: 'https://ri5e-51fcdab10009.herokuapp.com/',
+    // BASE_URL: 'http://localhost:3005',
     // BASE_URL: 'https://jsonplaceholder.typicode.com/',
 
     // Signup URL

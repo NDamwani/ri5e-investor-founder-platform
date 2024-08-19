@@ -5,26 +5,26 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { constants } from "../../utility/constants";
 
 export default function MentorMatch() {
-  const [bestMatch, setBestMatch] = useState(null);
+  const [bestMatch, setBestMatch] = useState([]);
   const [remainingMentors, setRemainingMentors] = useState([]);
   const { axiosGet } = useAxiosPrivate();
+
+  const token = localStorage.getItem("userToken");
+
+  const decodedToken = jwtDecode(token);
+  console.log("decodedToken", decodedToken);
+  console.log("token", token);
+  const userId = decodedToken.id;
+  console.log("userId", userId);
 
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-        const token = localStorage.getItem("userToken");
-
-        const decodedToken = jwtDecode(token);
-        console.log("decodedToken", decodedToken);
-        console.log("token", token);
-        const userId = decodedToken.id;
-        console.log("userId", userId);
-
         const response = await axiosGet(constants.GETBESTMENTOR + userId);
         console.log("response", response);
 
         if (response) {
-          setBestMatch(response.bestMatches[0]);
+          setBestMatch(response.bestMatches);
           setRemainingMentors(response.remainingMentors);
         }
       } catch (e) {
@@ -40,14 +40,20 @@ export default function MentorMatch() {
       <h1 className="mb-8 text-4xl md:text-6xl">Best Mentor Match</h1>
       <div className="mb-16 flex flex-col items-center">
         {bestMatch ? (
-          <MentorCard
-            key={bestMatch._id}
-            mentorId={bestMatch._id}
-            mentorName={bestMatch.fullName}
-            mentorEmail={bestMatch.email}
-            mentorSkills={bestMatch.skills?.join(", ")}
-            mentorExperience={bestMatch.experience}
-          />
+          bestMatch.map((mentor) => {
+            if (mentor?._id !== userId) {
+              return (
+                <MentorCard
+                  key={mentor._id}
+                  mentorId={mentor._id}
+                  mentorName={mentor.fullName}
+                  mentorEmail={mentor.email}
+                  mentorSkills={mentor.areaOfExpertise.join(", ")}
+                  mentorExperience={mentor?.industryExperience.join(", ")}
+                />
+              );
+            }
+          })
         ) : (
           <p>No best match found.</p>
         )}
@@ -62,8 +68,8 @@ export default function MentorMatch() {
               mentorId={mentor._id}
               mentorName={mentor.fullName}
               mentorEmail={mentor.email}
-              mentorSkills={mentor.skills?.join(", ")}
-              mentorExperience={mentor.experience}
+              mentorSkills={mentor.areaOfExpertise.join(", ")}
+              mentorExperience={mentor?.industryExperience.join(", ")}
             />
           ))
         ) : (

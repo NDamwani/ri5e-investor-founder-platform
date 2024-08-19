@@ -38,7 +38,7 @@ export default function MentorCard({
           className="h-full w-full rounded-lg object-contain"
         />
       </div>
-      <div className="flex flex-col gap-x-4 md:w-96 lg:flex-row">
+      <div className="flex flex-col gap-x-4 md:w-96">
         <div className="flex flex-col gap-y-4">
           <h2 className="text-2xl font-semibold md:text-4xl">{mentorName}</h2>
           <p className="text-lg">{mentorEmail}</p>
@@ -55,18 +55,6 @@ export default function MentorCard({
               navigate("/inbox", {
                 state: {
                   id: mentorId,
-                },
-              });
-            }}
-            className="min-w-40 max-w-60 self-center rounded bg-white p-2 font-semibold text-black transition hover:bg-gray-300"
-          />
-          <PrimaryButton
-            name="Profile"
-            type="button"
-            handleClick={async () => {
-              await navigate("/mentor/profile", {
-                state: {
-                  mentorId: mentorId,
                 },
               });
             }}

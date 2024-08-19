@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useUser } from "../../context/UserContextProvider";
@@ -12,13 +12,19 @@ export default function Inbox() {
   const { decodeToken, isMentor } = useUser();
   const socket = useSocket();
   const userId = decodeToken(JSON.parse(localStorage.getItem("userToken"))).id;
-
+  const lastMessageScroll = useRef(null);
   const [conversationList, setConversationList] = useState([]);
   const [currentConversation, setCurrentConversation] = useState([]);
   const [messageSend, setMessageSend] = useState(false);
   const [message, setMessage] = useState("");
 
-  // console.log("current conversation: ", currentConversation);
+  console.log("current conversation: ", currentConversation);
+
+  useEffect(() => {
+    if (currentConversation?.conversationId && lastMessageScroll.current) {
+      lastMessageScroll.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [currentConversation]);
 
   useEffect(() => {
     socket.emit("addUser", userId);
@@ -126,7 +132,7 @@ export default function Inbox() {
   return (
     <section className="my-32 flex flex-col items-center gap-8 sm:flex-row sm:justify-center">
       <div
-        className={`h-[600px] w-80 bg-accent/80 text-center ${currMentor !== "" ? "max-sm:hidden" : ""}`}
+        className={`h-[600px] w-80 bg-accent/80 text-center ${currentConversation?.conversationId ? "max-sm:hidden" : ""}`}
       >
         <div className="border-b-4 border-white/10 p-4 sm:p-8">
           <p className="text-4xl">Messages</p>
@@ -158,13 +164,13 @@ export default function Inbox() {
         </div>
       </div>
       <div
-        className={`h-[600px] w-full bg-accent sm:w-[600px] ${currentConversation ? "" : "max-sm:hidden"}`}
+        className={`h-[600px] w-full bg-accent sm:w-[600px] ${currentConversation?.conversationId ? "" : "max-sm:hidden"}`}
       >
         <div className="relative p-4 text-center">
-          {currMentor.mentorName !== "" && (
+          {currentConversation?.conversationId && (
             <button
               onClick={() => {
-                setCurrMentor("");
+                setCurrentConversation([]);
               }}
               className="absolute left-5 sm:hidden"
             >
@@ -189,6 +195,7 @@ export default function Inbox() {
                 </p>
               </li>
             ))}
+            <div ref={lastMessageScroll}></div>
           </ul>
         </div>
         <div className={`${currentConversation === "" ? "hidden" : ""}`}>
