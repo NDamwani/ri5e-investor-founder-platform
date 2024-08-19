@@ -66,6 +66,8 @@ const MainComponent = ({ productId }) => {
   const [revenue, setRevenue] = useState("");
   const [companyName, setCompanyName] = useState("");
 
+  // console.log("Product ID", productId);
+
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
@@ -73,28 +75,26 @@ const MainComponent = ({ productId }) => {
           const response = await axiosGet(
             constants.GETPRODUCTPROFILE + productId,
           );
-
           if (response) {
             const user = response.product;
             setUserName(user.fullName || "User");
             setWorth(user.networth || "NA");
             setRevenue(user.revenue || "NA");
             setCompanyName(user.companyName || "Company");
-          } else {
-            const token = localStorage.getItem("userToken");
+          }
+        } else {
+          const token = localStorage.getItem("userToken");
 
-            const decodedToken = jwtDecode(token);
-            const userId = decodedToken.id;
+          const decodedToken = jwtDecode(token);
+          const userId = decodedToken.id;
 
-            const response = await axiosGet(
-              constants.GETPRODUCTPROFILE + userId,
-            );
-            if (response) {
-              const user = response.product;
-              setUserName(user.fullName || "User");
-              setWorth(user.networth || "NA");
-              setRevenue(user.revenue || "NA");
-            }
+          const response = await axiosGet(constants.GETPRODUCTPROFILE + userId);
+
+          if (response) {
+            const user = response.product;
+            setUserName(user.fullName || "User");
+            setWorth(user.networth || "NA");
+            setRevenue(user.revenue || "NA");
           }
         }
       } catch (e) {

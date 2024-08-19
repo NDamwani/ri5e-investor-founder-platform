@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useUser } from "../../context/UserContextProvider";
 import { constants } from "../../utility/constants";
+import { mentorMessages } from "../../lib/constants/data";
 import { useSocket } from "../../context/SocketProvider";
 import Chatbox from "../Chatbox/Chatbox";
 
 export default function Inbox() {
+  const location = useLocation();
   const { axiosPost, axiosGet } = useAxiosPrivate();
   const { decodeToken, isMentor } = useUser();
   const socket = useSocket();
@@ -62,6 +65,22 @@ export default function Inbox() {
   //   console.log("conversation list: ", conversationList);
   // }, [conversationList]);
 
+  // static data to remove
+  const [currMentor, setCurrMentor] = useState(() => {
+    if (location.state) {
+      const filterMentor = mentorMessages.filter(
+        (mentor) => mentor.mentorName === location.state.mentorName,
+      );
+      if (filterMentor.length > 0) {
+        return filterMentor[0];
+      }
+    }
+    return {
+      mentorName: "",
+      messages: [],
+    };
+  });
+
   const fetchMessages = async (convId) => {
     try {
       if (!convId) return;
@@ -109,7 +128,7 @@ export default function Inbox() {
   return (
     <section className="my-32 flex flex-col items-center gap-8 sm:flex-row sm:justify-center">
       <div
-        className={`h-[600px] w-80 bg-accent/80 text-center ${currentConversation?.conversationId ? "max-sm:hidden" : ""}`}
+        className={`h-[600px] w-80 bg-accent/80 text-center ${currMentor !== "" ? "max-sm:hidden" : ""}`}
       >
         <div className="border-b-4 border-white/10 p-4 sm:p-8">
           <p className="text-4xl">Messages</p>
@@ -141,13 +160,13 @@ export default function Inbox() {
         </div>
       </div>
       <div
-        className={`h-[600px] w-full bg-accent sm:w-[600px] ${currentConversation?.conversationId ? "" : "max-sm:hidden"}`}
+        className={`h-[600px] w-full bg-accent sm:w-[600px] ${currentConversation ? "" : "max-sm:hidden"}`}
       >
         <div className="relative p-4 text-center">
-          {currentConversation?.conversationId && (
+          {currMentor.mentorName !== "" && (
             <button
               onClick={() => {
-                setCurrentConversation([]);
+                setCurrMentor("");
               }}
               className="absolute left-5 sm:hidden"
             >
