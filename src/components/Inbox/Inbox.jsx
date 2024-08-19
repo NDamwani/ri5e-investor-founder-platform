@@ -5,6 +5,7 @@ import { useUser } from "../../context/UserContextProvider";
 import { constants } from "../../utility/constants";
 import { mentorMessages } from "../../lib/constants/data";
 import { useSocket } from "../../context/SocketProvider";
+import Chatbox from "../Chatbox/Chatbox";
 
 export default function Inbox() {
   const location = useLocation();
@@ -12,19 +13,14 @@ export default function Inbox() {
   const { decodeToken, isMentor } = useUser();
   const socket = useSocket();
   const userId = decodeToken(JSON.parse(localStorage.getItem("userToken"))).id;
-  const lastMessageScroll = useRef(null);
+
   const [conversationList, setConversationList] = useState([]);
   const [currentConversation, setCurrentConversation] = useState([]);
   const [messageSend, setMessageSend] = useState(false);
   const [message, setMessage] = useState("");
 
-  console.log("current conversation: ", currentConversation);
-
-  useEffect(() => {
-    if (currentConversation?.conversationId && lastMessageScroll.current) {
-      lastMessageScroll.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [currentConversation]);
+  // console.log("current conversation: ", currentConversation);
+  console.log("conversation list: ", conversationList);
 
   useEffect(() => {
     socket.emit("addUser", userId);
@@ -183,40 +179,16 @@ export default function Inbox() {
               : "Select a mentor"}
           </p>
         </div>
-        <div className={`scrollbar h-[360px] overflow-y-scroll`}>
-          <ul>
-            {currentConversation?.messages?.map((message, index) => (
-              <li key={index} className="p-4">
-                <p className="text-lg font-bold">{message.sender}</p>
-                <p
-                  className={`p-2 ${message.senderId === userId ? "" : "text-right"}`}
-                >
-                  {message.message}
-                </p>
-              </li>
-            ))}
-            <div ref={lastMessageScroll}></div>
-          </ul>
-        </div>
+
+        {/* CHATBOX */}
         <div className={`${currentConversation === "" ? "hidden" : ""}`}>
-          <form onSubmit={handleSubmit}>
-            <div className="p-4">
-              <textarea
-                placeholder="Type your message here"
-                className="w-full rounded-lg bg-white/5 p-3 text-white focus:outline-none"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-              />
-            </div>
-            <div className="flex justify-end">
-              <button
-                className="mr-4 rounded border border-white bg-transparent p-2 px-6 py-2 font-semibold text-white transition hover:bg-gray-300 hover:text-black"
-                type="submit"
-              >
-                Send
-              </button>
-            </div>
-          </form>
+          <Chatbox
+            handleSubmit={handleSubmit}
+            setMessage={setMessage}
+            message={message}
+            currentConversation={currentConversation}
+            userId={userId}
+          />
         </div>
       </div>
     </section>
