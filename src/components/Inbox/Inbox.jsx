@@ -20,6 +20,7 @@ export default function Inbox() {
   const [message, setMessage] = useState("");
 
   // console.log("current conversation: ", currentConversation);
+  console.log("conversation list: ", conversationList);
 
   useEffect(() => {
     socket.emit("addUser", userId);
@@ -178,11 +179,16 @@ export default function Inbox() {
               : "Select a mentor"}
           </p>
         </div>
-        
 
         {/* CHATBOX */}
         <div className={`${currentConversation === "" ? "hidden" : ""}`}>
-          <Chatbox handleSubmit={handleSubmit} setMessage={setMessage} message={message} currentConversation={currentConversation}/>
+          <Chatbox
+            handleSubmit={handleSubmit}
+            setMessage={setMessage}
+            message={message}
+            currentConversation={currentConversation}
+            userId={userId}
+          />
         </div>
       </div>
     </section>
