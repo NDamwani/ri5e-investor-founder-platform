@@ -76,6 +76,14 @@ export const router = createBrowserRouter([
         ),
       },
       {
+        path: "/product/profile",
+        element: (
+          <ProtectedRoute>
+            <ProductPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
         path: "/connect/calendly",
         element: (
           <ProtectedRoute>

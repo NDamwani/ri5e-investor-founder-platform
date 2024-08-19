@@ -65,9 +65,9 @@ export default function ProductCard({
             name="Profile"
             type="button"
             handleClick={() => {
-              navigate("/mentor/profile", {
+              navigate("/product/profile", {
                 state: {
-                  productId: productId,
+                  id: productId,
                 },
               });
             }}
