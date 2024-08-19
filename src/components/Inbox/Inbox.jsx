@@ -1,14 +1,11 @@
-import { useEffect, useRef, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useUser } from "../../context/UserContextProvider";
 import { constants } from "../../utility/constants";
-import { mentorMessages } from "../../lib/constants/data";
 import { useSocket } from "../../context/SocketProvider";
 import Chatbox from "../Chatbox/Chatbox";
 
 export default function Inbox() {
-  const location = useLocation();
   const { axiosPost, axiosGet } = useAxiosPrivate();
   const { decodeToken, isMentor } = useUser();
   const socket = useSocket();
@@ -64,22 +61,6 @@ export default function Inbox() {
   // useEffect(() => {
   //   console.log("conversation list: ", conversationList);
   // }, [conversationList]);
-
-  // static data to remove
-  const [currMentor, setCurrMentor] = useState(() => {
-    if (location.state) {
-      const filterMentor = mentorMessages.filter(
-        (mentor) => mentor.mentorName === location.state.mentorName,
-      );
-      if (filterMentor.length > 0) {
-        return filterMentor[0];
-      }
-    }
-    return {
-      mentorName: "",
-      messages: [],
-    };
-  });
 
   const fetchMessages = async (convId) => {
     try {
