@@ -1,40 +1,69 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useCallback } from 'react';
+import { FixedSizeList as List } from 'react-window';
+import { useUser } from "../../context/UserContextProvider";
+import './Chatbox.css';
 
-const Chatbox = ({
-  setMessage,
-  handleSubmit,
-  message,
-  currentConversation,
-  userId,
-}) => {
-  console.log("currentConversation", currentConversation);
-  const messagesEndRef = useRef(null);
+const Chatbox = ({ setMessage, handleSubmit, message, currentConversation }) => {
+  const listRef = useRef(null);
+  const { decodeToken } = useUser();
+  const userId = decodeToken(JSON.parse(localStorage.getItem("userToken"))).id;
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  const scrollToBottom = useCallback(() => {
+    if (listRef.current) {
+      listRef.current.scrollToItem(currentConversation?.messages?.length - 1, 'end');
+    }
+  }, [currentConversation?.messages]);
 
   useEffect(() => {
     scrollToBottom();
-  }, [currentConversation?.messages]);
+  }, [currentConversation?.messages, scrollToBottom]);
+
+  const Row = ({ index, style }) => {
+    const msg = currentConversation?.messages[index];
+    const isUserMessage = msg.senderId === userId;
+
+    // Debugging to check senderId and userId
+    // console.log('Message:', msg.message);
+    // console.log('senderId:', msg.senderId, 'userId:', userId);
+    // console.log('isUserMessage:', isUserMessage);
+
+    return (
+      <div
+        style={{
+          ...style,
+          display: 'flex',
+          justifyContent: isUserMessage ? 'flex-end' : 'flex-start',
+        }}
+        key={index}
+        className="p-4"
+      >
+        <div className={`p-2 rounded-lg ${isUserMessage ? 'bg-blue-500 text-white' : 'bg-gray-300 text-black'}`}>
+          <p className="text-lg font-bold">{msg.sender}</p>
+          <p>{msg.message}</p>
+        </div>
+      </div>
+    );
+  };
 
   return (
-    <div>
-      <div className="scrollbar h-[360px] overflow-y-scroll">
-        <ul>
-          {currentConversation?.messages?.map((msg, index) => (
-            <li key={index} className="p-4">
-              <p className="text-lg font-bold">{msg.sender}</p>
-              <p
-                className={`p-2 ${msg.senderId === userId ? "" : "text-right"}`}
-              >
-                {msg.message}
-              </p>
-            </li>
-          ))}
-          <div ref={messagesEndRef} />
-        </ul>
+    <div className="chatbox-container">
+      {/* Virtualized message list */}
+      <div className="messages-container">
+        {currentConversation?.messages ? (
+          <List
+            height={300} 
+            itemCount={currentConversation.messages.length}
+            itemSize={70} 
+            ref={listRef}
+          >
+            {Row}
+          </List>
+        ) : (
+          <p>No messages available</p>
+        )}
       </div>
+
+      {/* Form for sending messages */}
       <form onSubmit={handleSubmit}>
         <div className="p-4">
           <textarea
