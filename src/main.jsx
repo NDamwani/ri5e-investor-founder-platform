@@ -8,13 +8,13 @@ import { SocketProvider } from "./context/SocketProvider";
 import UserContextProvider from "./context/UserContextProvider";
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    {/* <SocketProvider> */}
-    <UserContextProvider>
-      <RouterProvider router={router}>
-        <Root />
-      </RouterProvider>
-    </UserContextProvider>
-    {/* </SocketProvider> */}
-  </StrictMode>,
+  <>
+    <SocketProvider>
+      <UserContextProvider>
+        <RouterProvider router={router}>
+          <Root />
+        </RouterProvider>
+      </UserContextProvider>
+    </SocketProvider>
+  </>,
 );

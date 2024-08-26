@@ -45,6 +45,14 @@ export default function UserContextProvider({ children }) {
     return user;
   };
 
+  const getId = () => {
+    const token = localStorage.getItem("userToken");
+    if (!token) return null;
+    const decodedToken = jwtDecode(token);
+    const userId = decodedToken.id;
+    return userId;
+  };
+
   return (
     <UserContext.Provider
       value={{
@@ -57,6 +65,7 @@ export default function UserContextProvider({ children }) {
         logout,
         getUserTokenFromLocalStorage,
         decodeToken,
+        getId,
       }}
     >
       {children}

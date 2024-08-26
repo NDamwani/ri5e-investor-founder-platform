@@ -32,21 +32,28 @@ export default function Header() {
                     </Link>
                   </li>
                 ))}
-              {isLoggedIn &&
-                !isMentor &&
-                productOwnerNavLinks.map((navlink) => (
-                  <li key={navlink.link} className="h-full content-center">
-                    <Link to={navlink.link} className="hover:font-medium">
-                      {navlink.title}
-                    </Link>
-                  </li>
-                ))}
+              {isLoggedIn && !isMentor && (
+                <li className="h-full content-center">
+                  <Link
+                    to="/product/dashboard"
+                    className="mx-4 hover:font-medium"
+                  >
+                    Dashboard
+                  </Link>
+                  <Link to="/mentor/match" className="mx-4 hover:font-medium">
+                    Mentor Match
+                  </Link>
+                  <Link to="/inbox" className="mx-4 hover:font-medium">
+                    Inbox
+                  </Link>
+                </li>
+              )}
               {isLoggedIn && isMentor && (
                 <li className="h-full content-center">
-                  <Link to="/mentor/match" className="mx-4 hover:font-medium">
-                    Products
+                  <Link to="/product/match" className="mx-4 hover:font-medium">
+                    Product Match
                   </Link>
-                  <Link to="/mentor/inbox" className="mx-4 hover:font-medium">
+                  <Link to="/inbox" className="mx-4 hover:font-medium">
                     Inbox
                   </Link>
                 </li>

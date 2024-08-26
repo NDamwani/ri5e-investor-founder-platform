@@ -3,43 +3,69 @@ import { useLocation } from "react-router-dom";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useUser } from "../../context/UserContextProvider";
 import { constants } from "../../utility/constants";
-import { mentorList, mentorMessages } from "../../lib/constants/data";
+import { mentorMessages } from "../../lib/constants/data";
+import { useSocket } from "../../context/SocketProvider";
+import Chatbox from "../Chatbox/Chatbox";
 
 export default function Inbox() {
   const location = useLocation();
-  const state = location.state;
-  const id = state ? state.id : null;
   const { axiosPost, axiosGet } = useAxiosPrivate();
-  const { decodeToken } = useUser();
+  const { decodeToken, isMentor } = useUser();
+  const socket = useSocket();
   const userId = decodeToken(JSON.parse(localStorage.getItem("userToken"))).id;
 
+  const [conversationList, setConversationList] = useState([]);
+  const [currentConversation, setCurrentConversation] = useState([]);
+  const [messageSend, setMessageSend] = useState(false);
+  const [message, setMessage] = useState("");
+
+  // console.log("current conversation: ", currentConversation);
+  console.log("conversation list: ", conversationList);
+
   useEffect(() => {
-    const initiateConversation = async () => {
-      try {
-        if (!id) return;
-        const response = await axiosPost(constants.INITIATECONVERSATION, {
-          senderId: userId,
-          recieverId: id,
-        });
-        console.log(response);
-      } catch (e) {
-        console.log(e);
-      }
-    };
+    socket.emit("addUser", userId);
+    socket.on("getMessage", (data) => {
+      // console.log("message received: ", data);
+
+      setCurrentConversation((prev) => ({
+        ...prev,
+        messages: [...prev.messages, data],
+      }));
+    });
+  }, [socket]);
+
+  useEffect(() => {
     const fetchConversations = async () => {
       try {
-        const response = await axiosGet(
-          constants.GETPRODUCTCONVERSATION + userId,
-        );
-        console.log(response);
+        if (isMentor) {
+          const response = await axiosGet(
+            constants.GETPRODUCTCONVERSATION + userId,
+          );
+
+          // console.log("Is mentor call", response);
+          setConversationList(response.conversationData);
+          // console.log("URL", constants.GETPRODUCTCONVERSATION + userId);
+        } else {
+          const response = await axiosGet(
+            constants.GETMENTORCONVERSATION + userId,
+          );
+          // console.log("URL", constants.GETMENTORCONVERSATION + userId);
+
+          // console.log("Product call", response);
+          setConversationList(response.conversationData);
+        }
       } catch (e) {
         console.log(e);
       }
     };
-    initiateConversation();
     fetchConversations();
   }, []);
 
+  // useEffect(() => {
+  //   console.log("conversation list: ", conversationList);
+  // }, [conversationList]);
+
+  // static data to remove
   const [currMentor, setCurrMentor] = useState(() => {
     if (location.state) {
       const filterMentor = mentorMessages.filter(
@@ -54,20 +80,49 @@ export default function Inbox() {
       messages: [],
     };
   });
-  const [message, setMessage] = useState("");
 
-  const handleSubmit = (e) => {
+  const fetchMessages = async (convId) => {
+    try {
+      if (!convId) return;
+      const response = await axiosGet(constants.GETMENTORMESSAGES + convId);
+      // console.log("mentor messages: ", response);
+      return response.messageData;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const newMessage = {
-      sender: "Parth",
-      message: message,
-    };
-    const newMentor = {
-      mentorName: currMentor.mentorName,
-      messages: [...currMentor.messages, newMessage],
-    };
-    setCurrMentor(newMentor);
-    setMessage("");
+    if (message === "") return;
+    try {
+      setMessageSend(!messageSend);
+      // console.log("sender id:", userId);
+      //to check
+      const response = await axiosPost(constants.SENDMESSAGE, {
+        conversationId: currentConversation.conversationId,
+        senderId: userId,
+        message,
+        receiverId: currentConversation.receiverId,
+      });
+      const msgs = await fetchMessages(currentConversation.conversationId);
+      socket.emit("sendMessage", {
+        senderId: userId,
+        recieverId: currentConversation.receiverId,
+        message,
+        conversationId: currentConversation.conversationId,
+      });
+
+      setCurrentConversation({
+        ...currentConversation,
+        messages: msgs,
+      });
+      console.log("send message:", response);
+      setMessage("");
+      setMessageSend(!messageSend);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -80,19 +135,24 @@ export default function Inbox() {
         </div>
         <div className="mentor-scroolbar h-[480px] overflow-y-scroll">
           <ul>
-            {mentorList.map((mentor) => (
+            {conversationList?.map((mentor, index) => (
               <li
-                key={mentor.mentorName}
-                onClick={() => {
-                  setCurrMentor(
-                    mentorMessages.filter(
-                      (message) => message.mentorName === mentor.mentorName,
-                    )[0],
-                  );
+                key={index}
+                onClick={async () => {
+                  const msgs = await fetchMessages(mentor.conversationId);
+                  setCurrentConversation({
+                    conversationId: mentor.conversationId,
+                    mentorName: mentor.details.fullName,
+                    receiverId: mentor.details.recieverId,
+                    email: mentor.details.email,
+                    messages: msgs, // change with on click call using conv id
+                  });
                 }}
               >
                 <div className="my-2 border-b-4 border-white/10 p-4 hover:cursor-pointer">
-                  <p className="text-lg font-semibold">{mentor.mentorName}</p>
+                  <p className="text-lg font-semibold">
+                    {mentor.details?.fullName}
+                  </p>
                 </div>
               </li>
             ))}
@@ -100,7 +160,7 @@ export default function Inbox() {
         </div>
       </div>
       <div
-        className={`h-[600px] w-full bg-accent sm:w-[600px] ${currMentor !== "" ? "" : "max-sm:hidden"}`}
+        className={`h-[600px] w-full bg-accent sm:w-[600px] ${currentConversation ? "" : "max-sm:hidden"}`}
       >
         <div className="relative p-4 text-center">
           {currMentor.mentorName !== "" && (
@@ -114,43 +174,21 @@ export default function Inbox() {
             </button>
           )}
           <p className="text-3xl">
-            {currMentor.mentorName === ""
-              ? "Select a mentor"
-              : currMentor.mentorName}
+            {currentConversation
+              ? currentConversation.mentorName
+              : "Select a mentor"}
           </p>
         </div>
-        <div
-          className={`scrollbar h-[360px] ${currMentor.mentorName !== "" ? "overflow-y-scroll" : ""}`}
-        >
-          <ul>
-            {currMentor.messages.length > 0 &&
-              currMentor?.messages.map((message, index) => (
-                <li key={index} className="p-4">
-                  <p className="text-lg font-bold">{message.sender}</p>
-                  <p>{message.message}</p>
-                </li>
-              ))}
-          </ul>
-        </div>
-        <div className={`${currMentor.mentorName === "" ? "hidden" : ""}`}>
-          <form onSubmit={handleSubmit}>
-            <div className="p-4">
-              <textarea
-                placeholder="Type your message here"
-                className="w-full rounded-lg bg-white/5 p-3 text-white focus:outline-none"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-              />
-            </div>
-            <div className="flex justify-end">
-              <button
-                className="mr-4 rounded border border-white bg-transparent p-2 px-6 py-2 font-semibold text-white transition hover:bg-gray-300 hover:text-black"
-                type="submit"
-              >
-                Send
-              </button>
-            </div>
-          </form>
+
+        {/* CHATBOX */}
+        <div className={`${currentConversation === "" ? "hidden" : ""}`}>
+          <Chatbox
+            handleSubmit={handleSubmit}
+            setMessage={setMessage}
+            message={message}
+            currentConversation={currentConversation}
+            userId={userId}
+          />
         </div>
       </div>
     </section>

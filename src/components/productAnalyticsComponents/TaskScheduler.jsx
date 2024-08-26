@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { FaPlus, FaTrashAlt, FaSyncAlt } from 'react-icons/fa';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
-import { constants } from '../../utility/constants';
-import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import React, { useState, useEffect } from "react";
+import { FaPlus, FaTrashAlt, FaSyncAlt } from "react-icons/fa";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import { constants } from "../../utility/constants";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 const TaskScheduler = () => {
   const { axiosGet, axiosPost, axiosPatch, axiosDelete } = useAxiosPrivate();
@@ -15,11 +15,11 @@ const TaskScheduler = () => {
       if (data && Array.isArray(data.tasks)) {
         setTasks(data.tasks);
       } else {
-        setTasks([]); // Default to empty array if tasks are not returned correctly
+        setTasks([]);
       }
     } catch (error) {
-      console.error('Error fetching tasks:', error);
-      setTasks([]); // Default to empty array in case of error
+      console.error("Error fetching tasks:", error);
+      setTasks([]);
     }
   };
 
@@ -29,7 +29,7 @@ const TaskScheduler = () => {
       setTasks([...tasks, data.task]);
       resetForm();
     } catch (error) {
-      console.error('Error adding task:', error);
+      console.error("Error adding task:", error);
     }
   };
 
@@ -38,16 +38,18 @@ const TaskScheduler = () => {
       await axiosDelete(`${constants.TASKS}/${taskId}`);
       setTasks(tasks.filter((task) => task._id !== taskId));
     } catch (error) {
-      console.error('Error deleting task:', error);
+      console.error("Error deleting task:", error);
     }
   };
 
   const updateTaskStatus = async (taskId, status) => {
     try {
-      const data = await axiosPatch(`${constants.TASKS}/${taskId}/status`, { status });
+      const data = await axiosPatch(`${constants.TASKS}/${taskId}/status`, {
+        status,
+      });
       setTasks(tasks.map((task) => (task._id === taskId ? data.task : task)));
     } catch (error) {
-      console.error('Error updating task status:', error);
+      console.error("Error updating task status:", error);
     }
   };
 
@@ -56,93 +58,114 @@ const TaskScheduler = () => {
   }, []);
 
   const validationSchema = Yup.object({
-    task: Yup.string().required('Task name is required'),
-    status: Yup.string().oneOf(['in progress', 'done', 'on hold'], 'Invalid status').required('Status is required'),
-    time: Yup.string().required('Time is required'),
+    task: Yup.string().required("Task name is required"),
+    status: Yup.string()
+      .oneOf(["in progress", "done", "on hold"], "Invalid status")
+      .required("Status is required"),
+    time: Yup.string().required("Time is required"),
   });
 
   return (
-    <div className="w-1/4 flex justify-center items-start">
-      <div className="bg-gray-900 text-white rounded-lg space-y-4 w-full">
+    <div className="flex w-1/4 items-start justify-end">
+      <div className="w-full space-y-4 rounded-lg bg-gray-900 text-white">
         {/* Heading */}
-        <h2 className="text-xl font-semibold text-center py-4">Task Scheduler</h2>
+        <h2 className="py-4 text-center text-xl font-semibold">
+          Task Scheduler
+        </h2>
 
         {/* Formik Form for Task Input */}
         <Formik
-          initialValues={{ task: '', status: 'in progress', time: '' }}
+          initialValues={{ task: "", status: "in progress", time: "" }}
           validationSchema={validationSchema}
           onSubmit={addTask}
         >
           {({ isSubmitting }) => (
-            <Form className="flex flex-col space-y-4 bg-gray-800 p-4 rounded-lg">
-              <div className="flex flex-col mb-4">
+            <Form className="flex flex-col space-y-4 rounded-lg bg-gray-800 p-4">
+              <div className="mb-4 flex flex-col">
                 <Field
                   type="text"
                   name="task"
                   placeholder="New Task"
-                  className="bg-gray-800 text-white border-none outline-none p-2 rounded-lg"
+                  className="rounded-lg border-none bg-gray-800 p-2 text-white outline-none"
                 />
-                <ErrorMessage name="task" component="div" className="text-red-500 text-sm mt-1" />
+                <ErrorMessage
+                  name="task"
+                  component="div"
+                  className="mt-1 text-sm text-red-500"
+                />
               </div>
 
-              <div className="flex flex-col mb-4">
+              <div className="mb-4 flex flex-col">
                 <Field
                   as="select"
                   name="status"
-                  className="bg-gray-700 text-white p-2 rounded-lg"
+                  className="rounded-lg bg-gray-700 p-2 text-white"
                 >
                   <option value="in progress">In Progress</option>
                   <option value="done">Done</option>
                   <option value="on hold">On Hold</option>
                 </Field>
-                <ErrorMessage name="status" component="div" className="text-red-500 text-sm mt-1" />
+                <ErrorMessage
+                  name="status"
+                  component="div"
+                  className="mt-1 text-sm text-red-500"
+                />
               </div>
 
-              <div className="flex flex-col mb-4">
+              <div className="mb-4 flex flex-col">
                 <Field
                   type="text"
                   name="time"
                   placeholder="Time"
-                  className="bg-gray-800 text-white border-none outline-none p-2 rounded-lg"
+                  className="rounded-lg border-none bg-gray-800 p-2 text-white outline-none"
                 />
-                <ErrorMessage name="time" component="div" className="text-red-500 text-sm mt-1" />
+                <ErrorMessage
+                  name="time"
+                  component="div"
+                  className="mt-1 text-sm text-red-500"
+                />
               </div>
 
-              <button type="submit" disabled={isSubmitting} className="bg-blue-600 text-white p-2 rounded-lg flex items-center justify-center">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="flex items-center justify-center rounded-lg bg-blue-600 p-2 text-white"
+              >
                 <FaPlus className="mr-2" />
-                {isSubmitting ? 'Adding...' : 'Add Task'}
+                {isSubmitting ? "Adding..." : "Add Task"}
               </button>
             </Form>
           )}
         </Formik>
 
         {/* Task List */}
-        <div className="space-y-4 overflow-y-auto p-4 max-h-[500px]" >
-
+        <div className="max-h-[500px] space-y-4 overflow-y-auto p-4">
           {tasks.length > 0 ? (
-            tasks.map((task) => (
+              tasks.slice().reverse().map((task) => (
               <div
                 key={task._id}
-                className="flex items-center justify-between bg-gray-800 p-3 rounded-lg mb-2"
+                className="mb-2 flex items-center justify-between rounded-lg bg-gray-800 p-3"
               >
                 <div>
-                  <span className="block text-lg font-semibold">{task.task}</span>
+                  <span className="block text-lg font-semibold">
+                    {task.task}
+                  </span>
                   <span
                     className={`block text-sm ${
-                      task.status === 'done'
-                        ? 'text-green-500'
-                        : task.status === 'on hold'
-                        ? 'text-yellow-500'
-                        : 'text-orange-500'
+                      task.status === "done"
+                        ? "text-green-500"
+                        : task.status === "on hold"
+                          ? "text-yellow-500"
+                          : "text-orange-500"
                     }`}
                   >
                     {task.status}
                   </span>
-                  <span className="text-gray-400 text-sm">{task.time}</span>
+                  <span className="text-sm text-gray-400">{task.time}</span>
                 </div>
                 <div className="flex space-x-2">
                   <button
-                    onClick={() => updateTaskStatus(task._id, 'in progress')}
+                    onClick={() => updateTaskStatus(task._id, "in progress")}
                     className="text-blue-500"
                   >
                     <FaSyncAlt />
@@ -157,7 +180,7 @@ const TaskScheduler = () => {
               </div>
             ))
           ) : (
-            <p className="text-gray-400 text-center">No tasks scheduled</p>
+            <p className="text-center text-gray-400">No tasks scheduled</p>
           )}
         </div>
       </div>
