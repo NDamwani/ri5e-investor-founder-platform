@@ -120,13 +120,13 @@ const TaskScheduler = () => {
         <div className="space-y-4 overflow-y-auto p-4 max-h-[500px]" >
 
           {tasks.length > 0 ? (
-            tasks.map((task) => (
+            tasks.slice().reverse().map((task) => (
               <div
                 key={task._id}
                 className="flex items-center justify-between bg-gray-800 p-3 rounded-lg mb-2"
               >
                 <div>
-                  <span className="block text-lg font-semibold">{task.tasks}</span>
+                  <span className="block text-lg font-semibold">{task.task}</span>
                   <span
                     className={`block text-sm ${
                       task.status === 'done'

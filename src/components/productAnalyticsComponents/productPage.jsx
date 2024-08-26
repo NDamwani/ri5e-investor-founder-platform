@@ -1,25 +1,18 @@
-import React from "react";
-import Header from "./Header";
+import React from 'react';
 import MainComponent from "./MainComponent";
-import TaskScheduler from "./TaskScheduler"; // Import TaskSchedulerimport TaskScheduler from "./TaskScheduler";
-import { useLocation } from "react-router-dom";
-
+import TaskScheduler from "./TaskScheduler"; 
 
 function ProductPage() {
-  const state = useLocation();
-
-  let productId = state.state?.id;
-  // console.log("productId", productId);
   return (
-    <div className="mb-10">
-      <div className="flex bg-gray-900">
+    <div className='flex-1 '>
+      <div className="flex">
         {/* <Sidebar /> */}
-        <div className="flex-1 flex">
-          <div className="flex-1 flex flex-col ">
+        <div className="flex-1 flex mx-auto">
+          <div className="flex-1 flex flex-col">
             {/* <Header /> */}
             <MainComponent />
           </div>
-          <TaskScheduler/>
+          <TaskScheduler />
         </div>
       </div>
     </div>
