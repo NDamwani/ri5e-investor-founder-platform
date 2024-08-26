@@ -37,7 +37,7 @@ export default function ProductMatch() {
   }, []);
   return (
     <section className="text-center">
-      <h1 className="text-4xl md:text-6xl">Best Product Matches</h1>
+      <h1 className="text-4xl md:text-6xl">Products</h1>
       <div className="flex flex-col items-center">
         {products.map((product) => (
           <ProductCard
@@ -50,12 +50,6 @@ export default function ProductMatch() {
             experience={product.experience}
           />
         ))}
-      </div>
-      <h2 className="mt-12 text-4xl sm:mt-20 md:text-6xl">Available Prducts</h2>
-      <div className="flex flex-col items-center">
-        {/* <MentorCard />
-        <MentorCard />
-        <MentorCard /> */}
       </div>
     </section>
   );
