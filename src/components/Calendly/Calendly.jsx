@@ -2,7 +2,7 @@ import React from "react";
 import { InlineWidget, PopupButton, PopupWidget } from "react-calendly";
 
 export default function Calendly() {
-  const URL = "https://calendly.com/parth-rathod12/product-owner-meet";
+  const URL = "https://calendly.com/nikhildamwani-14/product-owner-meet";
   //   return (
   //     <div>
   //       <h1>Calendly</h1>
