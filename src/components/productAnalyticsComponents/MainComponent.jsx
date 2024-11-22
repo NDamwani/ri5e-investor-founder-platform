@@ -75,7 +75,7 @@ const MainComponent = ({ userId }) => {
     fetchProfileData();
   }, []);
 
-  const CALENDLY_URL = "https://calendly.com/parth-rathod12/product-owner-meet";
+  const CALENDLY_URL = "https://calendly.com/nikhildamwani-14/product-owner-meet";
 
   return (
     <div className="p-8 bg-black text-white">

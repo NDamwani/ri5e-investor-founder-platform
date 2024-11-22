@@ -33,7 +33,7 @@ export default function ProductCard({
     <div className="mt-8 flex w-full items-center justify-center gap-8 rounded-3xl bg-accent p-4 px-12 sm:w-1/2 md:justify-evenly md:p-8">
       <div className="my-auto hidden rounded-lg bg-white md:block md:w-48">
         <img
-          src="/team-man.jpg"
+          src="/team-man.jpeg"
           alt="mentor"
           className="h-full w-full rounded-lg object-contain"
         />
