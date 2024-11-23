@@ -12,7 +12,6 @@ function App() {
       <Vision />
       <Services />
       <News />
-      <Team />
 
     </div>
   );
